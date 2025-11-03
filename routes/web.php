@@ -2,14 +2,15 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\UserManagementController;
 
 Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+// Route::get('/dashboard', function () {
+//     return view('dashboard');
+// })->middleware(['auth', 'verified'])->name('dashboard');
 
 // Route::middleware(['auth', 'verified'])->group(function () {
     // Route::get('/admin/dashboard', function () {
@@ -22,19 +23,45 @@ Route::get('/dashboard', function () {
     //     return view('dashboard', ['role' => 'staff']);
     // })->name('staff.dashboard')->middleware('role.staff');
 
+// Route::middleware(['auth'])->group(function () {
+//     Route::get('/admin/dashboard', function () {
+//         return view('dashboard', ['role' => 'Admin']);
+//     })->name('admin.dashboard')->middleware('role:admin');
+
+//     Route::get('/manager/dashboard', function () {
+//         return view('dashboard', ['role' => 'Manager']);
+//     })->name('manager.dashboard')->middleware('role:manager');
+
+//     Route::get('/staff/dashboard', function () {
+//         return view('dashboard', ['role' => 'Staff']);
+//     })->name('staff.dashboard')->middleware('role:staff');
+// });    
+
 Route::middleware(['auth'])->group(function () {
-    Route::get('/admin/dashboard', function () {
-        return view('dashboard', ['role' => 'Admin']);
-    })->name('admin.dashboard')->middleware('role:admin');
 
-    Route::get('/manager/dashboard', function () {
-        return view('dashboard', ['role' => 'Manager']);
-    })->name('manager.dashboard')->middleware('role:manager');
+    // === Admin Dashboard ===
+Route::middleware(['auth', 'role:admin'])->prefix('admin')->as('admin.')->group(function () {
+    Route::get('/dashboard', function () {
+        return view('admin.index', ['role' => 'Admin']);
+    })->name('dashboard');
 
-    Route::get('/staff/dashboard', function () {
-        return view('dashboard', ['role' => 'Staff']);
-    })->name('staff.dashboard')->middleware('role:staff');
-});    
+    Route::resource('users', UserManagementController::class);
+});
+
+    // === Manager Dashboard ===
+    Route::middleware('role:manager')->group(function () {
+        Route::get('/manager/dashboard', function () {
+            return view('dashboard', ['role' => 'Manager']);
+        })->name('manager.dashboard');
+    });
+
+    // === Staff Dashboard ===
+    Route::middleware('role:staff')->group(function () {
+        Route::get('/staff/dashboard', function () {
+            return view('dashboard', ['role' => 'Staff']);
+        })->name('staff.dashboard');
+    });
+});
 
 
 

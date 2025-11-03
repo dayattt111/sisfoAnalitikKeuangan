@@ -9,25 +9,53 @@
 <body class="bg-gray-100 text-gray-800 flex flex-col min-h-screen">
 
     <!-- Navbar -->
-    <nav class="bg-white shadow-md py-4 px-8 flex justify-between items-center">
-        <h1 class="text-xl font-semibold text-blue-600">Sistem Informasi Analitik Keuangan</h1>
-        <div>
-            @if (Route::has('login'))
-                @auth
-                    <a href="{{ url('/dashboard') }}" class="text-gray-700 hover:text-blue-600 px-3">Dashboard</a>
-                    <form method="POST" action="{{ route('logout') }}" class="inline">
-                        @csrf
-                        <button type="submit" class="text-gray-700 hover:text-red-500 px-3">Logout</button>
-                    </form>
-                @else
-                    <a href="{{ route('login') }}" class="text-gray-700 hover:text-blue-600 px-3">Login</a>
-                    @if (Route::has('register'))
-                        <a href="{{ route('register') }}" class="text-gray-700 hover:text-blue-600 px-3">Register</a>
-                    @endif
-                @endauth
-            @endif
-        </div>
-    </nav>
+<nav class="bg-white shadow-md py-4 px-8 flex justify-between items-center">
+    <h1 class="text-xl font-semibold text-blue-600">
+        Sistem Informasi Analitik Keuangan
+    </h1>
+
+    <div>
+        @if (Route::has('login'))
+            @auth
+                @php
+                    // Dapatkan user yang sedang login
+                    $user = Auth::user();
+
+                    // Tentukan dashboard sesuai role
+                    $dashboardRoute = match($user->role) {
+                        'admin' => route('admin.dashboard'),
+                        'manager' => route('manager.dashboard'),
+                        'staff' => route('staff.dashboard'),
+                        default => '#',
+                    };
+                @endphp
+
+                {{-- Tombol Dashboard dinamis --}}
+                <a href="{{ $dashboardRoute }}" class="text-gray-700 hover:text-blue-600 px-3">
+                    Dashboard
+                </a>
+
+                {{-- Tombol Logout --}}
+                <form method="POST" action="{{ route('logout') }}" class="inline">
+                    @csrf
+                    <button type="submit" class="text-gray-700 hover:text-red-500 px-3">
+                        Logout
+                    </button>
+                </form>
+            @else
+                {{-- Jika belum login --}}
+                <a href="{{ route('login') }}" class="text-gray-700 hover:text-blue-600 px-3">
+                    Login
+                </a>
+                @if (Route::has('register'))
+                    <a href="{{ route('register') }}" class="text-gray-700 hover:text-blue-600 px-3">
+                        Register
+                    </a>
+                @endif
+            @endauth
+        @endif
+    </div>
+</nav>
 
     <!-- Main Content -->
     <main class="flex-grow flex flex-col justify-center items-center text-center px-6">

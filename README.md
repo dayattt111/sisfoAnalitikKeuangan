@@ -20,10 +20,10 @@ Proyek ini dibangun menggunakan kombinasi teknologi berikut:
 
 | Kategori | Teknologi | Versi (Opsional) |
 | :--- | :--- | :--- |
-| **Backend** | **[GANTI DENGAN: Python (Django/Flask) / PHP (Laravel) / Node.js (Express)]** | `[Versi]` |
-| **Frontend** | HTML, CSS, JavaScript (dengan **[GANTI DENGAN: React/Vue/Bootstrap/Tailwind CSS]**) | `[Versi]` |
-| **Database** | **[GANTI DENGAN: PostgreSQL / MySQL / MongoDB]** | `[Versi]` |
-| **Visualisasi** | **[GANTI DENGAN: Chart.js / D3.js / Plotly]** | `[Versi]` |
+| **Backend** | **[GANTI DENGAN: Python (Django/Flask) / PHP (Laravel) / Node.js (Express)]** | `
+| **Frontend** | HTML, CSS, JavaScript (dengan **[GANTI DENGAN: React/Vue/Bootstrap/Tailwind CSS]**) | `
+| **Database** | **[GANTI DENGAN: PostgreSQL / MySQL / MongoDB]** | `
+| **Visualisasi** | **[GANTI DENGAN: Chart.js / D3.js / Plotly]** | `
 
 -----
 
@@ -51,13 +51,15 @@ Pastikan Anda telah menginstal perangkat lunak berikut:
 2.  **Instal Dependensi:**
 
     ```bash
-    # Contoh untuk proyek Python
-    pip install -r requirements.txt
+    # install Node.js/JavaScript
+    npm install
     ```
 
     ```bash
-    # Contoh untuk proyek Node.js/JavaScript
-    npm install
+    # install composer
+    composer install
+
+    composer update
     ```
 
 3.  **Konfigurasi Environment:**
@@ -99,7 +101,7 @@ Pastikan Anda telah menginstal perangkat lunak berikut:
     ```bash
     # Contoh perintah menjalankan server
     [php artisan serve]
-    
+
     [npm run dev]
     ```
 

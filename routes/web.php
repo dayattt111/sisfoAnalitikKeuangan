@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\UserManagementController;
+use App\Http\Controllers\Admin\AdminDashboardController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -40,13 +41,12 @@ Route::get('/', function () {
 Route::middleware(['auth'])->group(function () {
 
     // === Admin Dashboard ===
-Route::middleware(['auth', 'role:admin'])->prefix('admin')->as('admin.')->group(function () {
-    Route::get('/dashboard', function () {
-        return view('admin.index', ['role' => 'Admin']);
-    })->name('dashboard');
 
+Route::middleware(['auth', 'role:admin'])->prefix('admin')->as('admin.')->group(function () {
+    Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
     Route::resource('users', UserManagementController::class);
 });
+
 
     // === Manager Dashboard ===
     Route::middleware('role:manager')->group(function () {

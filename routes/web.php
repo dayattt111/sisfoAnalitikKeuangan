@@ -4,9 +4,12 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\UserManagementController;
 use App\Http\Controllers\Admin\AdminDashboardController;
+
 use App\Http\Controllers\Manager\ManagerDashboardController;
 use App\Http\Controllers\Manager\FinanceController;
 use App\Http\Controllers\Manager\TransactionReportController;
+use App\Http\Controllers\Manager\ReportController;
+
 use App\Http\Controllers\Staff\StaffDashboardController;
 
 Route::get('/', function () {
@@ -29,7 +32,7 @@ Route::middleware(['role:manager'])->prefix('manager')->as('manager.')->group(fu
     // fitur
     Route::get('/finance', [FinanceController::class, 'index'])->name('finance');
     Route::get('/transaction', [TransactionReportController::class, 'index'])->name('transaction');
-    Route::get('/report', [FinanceController::class, 'bb'])->name('report');
+    Route::get('/report', [ReportController::class, 'index'])->name('report');
     });
 
     // Staff Dashb

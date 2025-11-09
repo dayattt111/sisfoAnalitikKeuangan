@@ -27,8 +27,8 @@ Route::middleware(['role:manager'])->prefix('manager')->as('manager.')->group(fu
 
     // fitur
     Route::get('/finance', [FinanceController::class, 'index'])->name('finance');
-    Route::get('/transaction', [FinanceController::class, 'index'])->name('transaction');
-    Route::get('/report', [FinanceController::class, 'index'])->name('report');
+    Route::get('/transaction', [FinanceController::class, 'aa'])->name('transaction');
+    Route::get('/report', [FinanceController::class, 'bb'])->name('report');
     });
 
     // Staff Dashb

@@ -1,59 +1,58 @@
-@extends('layouts.app')
+@extends('layouts.manager')
+
+@section('title', 'Ringkasan Keuangan')
 
 @section('content')
-<div class="container mt-5">
-    <h2 class="mb-4">Ringkasan Keuangan</h2>
+<div class="space-y-6">
+    {{-- Header --}}
+    <div class="bg-gradient-to-r from-green-600 to-emerald-600 text-white p-6 rounded-lg shadow">
+        <h2 class="text-2xl font-semibold mb-2">📊 Ringkasan Keuangan</h2>
+        <p class="text-green-100">Laporan keuangan bulanan dan tahunan.</p>
+    </div>
 
-    <div class="row text-center">
-        <div class="col-md-4">
-            <div class="card shadow-sm p-3">
-                <h5>Total Pemasukan</h5>
-                <h3 class="text-success">Rp {{ number_format($total_pemasukan, 2, ',', '.') }}</h3>
-            </div>
+    {{-- Statistik Tahunan --}}
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+        <div class="bg-white p-6 rounded-lg shadow text-center">
+            <h3 class="text-gray-500 text-sm font-medium">Total Pemasukan</h3>
+            <p class="text-3xl font-bold text-green-600 mt-2">Rp {{ number_format($totalPemasukan, 0, ',', '.') }}</p>
         </div>
-        <div class="col-md-4">
-            <div class="card shadow-sm p-3">
-                <h5>Total Pengeluaran</h5>
-                <h3 class="text-danger">Rp {{ number_format($total_pengeluaran, 2, ',', '.') }}</h3>
-            </div>
+
+        <div class="bg-white p-6 rounded-lg shadow text-center">
+            <h3 class="text-gray-500 text-sm font-medium">Total Pengeluaran</h3>
+            <p class="text-3xl font-bold text-red-600 mt-2">Rp {{ number_format($totalPengeluaran, 0, ',', '.') }}</p>
         </div>
-        <div class="col-md-4">
-            <div class="card shadow-sm p-3">
-                <h5>Saldo Akhir</h5>
-                <h3 class="text-primary">Rp {{ number_format($saldo_akhir, 2, ',', '.') }}</h3>
-            </div>
+
+        <div class="bg-white p-6 rounded-lg shadow text-center">
+            <h3 class="text-gray-500 text-sm font-medium">Saldo Akhir</h3>
+            <p class="text-3xl font-bold text-blue-600 mt-2">Rp {{ number_format($saldoAkhir, 0, ',', '.') }}</p>
         </div>
     </div>
 
-    <div class="mt-5">
-        <canvas id="financeChart"></canvas>
+    {{-- Tabel Ringkasan Bulanan --}}
+    <div class="bg-white p-6 rounded-lg shadow mt-8">
+        <h3 class="text-lg font-semibold mb-4">📅 Ringkasan Keuangan Bulanan</h3>
+        <table class="w-full border border-gray-200 rounded-lg">
+            <thead class="bg-gray-100 text-gray-700">
+                <tr>
+                    <th class="p-3 text-left">Bulan</th>
+                    <th class="p-3 text-right">Pemasukan</th>
+                    <th class="p-3 text-right">Pengeluaran</th>
+                    <th class="p-3 text-right">Saldo</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($monthlyData as $data)
+                    <tr class="border-t hover:bg-gray-50">
+                        <td class="p-3">{{ $data['bulan'] }}</td>
+                        <td class="p-3 text-right text-green-600">Rp {{ number_format($data['pemasukan'], 0, ',', '.') }}</td>
+                        <td class="p-3 text-right text-red-600">Rp {{ number_format($data['pengeluaran'], 0, ',', '.') }}</td>
+                        <td class="p-3 text-right font-semibold text-blue-600">
+                            Rp {{ number_format($data['pemasukan'] - $data['pengeluaran'], 0, ',', '.') }}
+                        </td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
     </div>
 </div>
-
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script>
-    const ctx = document.getElementById('financeChart');
-    const data = {
-        labels: {!! json_encode($grafik->pluck('bulan')) !!},
-        datasets: [
-            {
-                label: 'Pemasukan',
-                data: {!! json_encode($grafik->pluck('total_pemasukan')) !!},
-                borderColor: 'green',
-                backgroundColor: 'rgba(0, 255, 0, 0.3)',
-            },
-            {
-                label: 'Pengeluaran',
-                data: {!! json_encode($grafik->pluck('total_pengeluaran')) !!},
-                borderColor: 'red',
-                backgroundColor: 'rgba(255, 0, 0, 0.3)',
-            }
-        ]
-    };
-
-    new Chart(ctx, {
-        type: 'bar',
-        data: data,
-    });
-</script>
 @endsection

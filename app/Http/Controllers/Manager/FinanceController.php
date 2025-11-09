@@ -1,31 +1,33 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Manager;
 
 use Illuminate\Http\Request;
 use App\Models\Transaction;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 
 class FinanceController extends Controller
 {
     public function index()
     {
-        $total_pemasukan = Transaction::where('jenis', 'pemasukan')->sum('jumlah');
-        $total_pengeluaran = Transaction::where('jenis', 'pengeluaran')->sum('jumlah');
-        $saldo_akhir = $total_pemasukan - $total_pengeluaran;
+        // Data dummy untuk ringkasan keuangan bulanan
+        $monthlyData = [
+            ['bulan' => 'Januari', 'pemasukan' => 12000000, 'pengeluaran' => 7000000],
+            ['bulan' => 'Februari', 'pemasukan' => 10000000, 'pengeluaran' => 5000000],
+            ['bulan' => 'Maret', 'pemasukan' => 15000000, 'pengeluaran' => 8000000],
+            ['bulan' => 'April', 'pemasukan' => 11000000, 'pengeluaran' => 6000000],
+            ['bulan' => 'Mei', 'pemasukan' => 13000000, 'pengeluaran' => 9000000],
+            ['bulan' => 'Juni', 'pemasukan' => 14000000, 'pengeluaran' => 8500000],
+        ];
 
-        // Grafik data
-        $grafik = Transaction::select(
-            DB::raw('MONTH(tanggal) as bulan'),
-            DB::raw('SUM(CASE WHEN jenis = "pemasukan" THEN jumlah ELSE 0 END) as total_pemasukan'),
-            DB::raw('SUM(CASE WHEN jenis = "pengeluaran" THEN jumlah ELSE 0 END) as total_pengeluaran')
-        )
-        ->groupBy('bulan')
-        ->orderBy('bulan')
-        ->get();
+        // Ringkasan tahunan
+        $totalPemasukan = collect($monthlyData)->sum('pemasukan');
+        $totalPengeluaran = collect($monthlyData)->sum('pengeluaran');
+        $saldoAkhir = $totalPemasukan - $totalPengeluaran;
 
         return view('manager.finance.index', compact(
-            'total_pemasukan', 'total_pengeluaran', 'saldo_akhir', 'grafik'
+            'monthlyData', 'totalPemasukan', 'totalPengeluaran', 'saldoAkhir'
         ));
     }
 }

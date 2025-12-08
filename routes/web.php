@@ -37,8 +37,14 @@ Route::middleware(['role:manager'])->prefix('manager')->as('manager.')->group(fu
     Route::get('/dashboard', [ManagerDashboardController::class, 'index'])->name('dashboard');
 
     // fitur
-    Route::get('/finance', [FinanceController::class, 'index'])->name('finance');
-    Route::get('/transaction', [TransactionReportController::class, 'index'])->name('transaction');
+    Route::get('/finance', [FinanceController::class, 'index'])->name('finance.index');
+    Route::get('/finance/{month}', [FinanceController::class, 'show'])->name('finance.show');
+    
+    Route::get('/transaction', [TransactionReportController::class, 'index'])->name('transaction.index');
+    Route::get('/transaction/{transaction}', [TransactionReportController::class, 'show'])->name('transaction.show');
+    Route::get('/transaction-download-pdf', [TransactionReportController::class, 'downloadPdf'])->name('transaction.download-pdf');
+    Route::get('/transaction-download-csv', [TransactionReportController::class, 'downloadCsv'])->name('transaction.download-csv');
+    
     Route::get('/report', [ReportController::class, 'index'])->name('report');
     });
 

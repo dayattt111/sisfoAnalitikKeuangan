@@ -27,17 +27,20 @@
                    <span>Dashboard</span>
                 </a>
 
-                <a href="{{ route('manager.finance') }}"
-                   class="flex items-center gap-2 px-4 py-2 rounded-lg transition-all duration-200 hover:bg-blue-500 hover:pl-5 {{ request()->routeIs('admin.users.*') ? 'bg-blue-600 pl-5 shadow-md' : '' }}">
-                   <span>finansial</span>
+                <a href="{{ route('manager.finance.index') }}"
+                   class="flex items-center gap-2 px-4 py-2 rounded-lg transition-all duration-200 hover:bg-blue-500 hover:pl-5 {{ request()->routeIs('manager.finance.*') ? 'bg-blue-600 pl-5 shadow-md' : '' }}">
+                   <i class="fas fa-chart-line"></i>
+                   <span>Ringkasan Keuangan</span>
                 </a>
-                <a href="{{ route('manager.transaction') }}"
-                   class="flex items-center gap-2 px-4 py-2 rounded-lg transition-all duration-200 hover:bg-blue-500 hover:pl-5 {{ request()->routeIs('admin.users.*') ? 'bg-blue-600 pl-5 shadow-md' : '' }}">
-                   <span>transaksi</span>
+                <a href="{{ route('manager.transaction.index') }}"
+                   class="flex items-center gap-2 px-4 py-2 rounded-lg transition-all duration-200 hover:bg-blue-500 hover:pl-5 {{ request()->routeIs('manager.transaction.*') ? 'bg-blue-600 pl-5 shadow-md' : '' }}">
+                   <i class="fas fa-exchange-alt"></i>
+                   <span>Laporan Transaksi</span>
                 </a>
                 <a href="{{ route('manager.report') }}"
-                   class="flex items-center gap-2 px-4 py-2 rounded-lg transition-all duration-200 hover:bg-blue-500 hover:pl-5 {{ request()->routeIs('admin.users.*') ? 'bg-blue-600 pl-5 shadow-md' : '' }}">
-                   <span>report</span>
+                   class="flex items-center gap-2 px-4 py-2 rounded-lg transition-all duration-200 hover:bg-blue-500 hover:pl-5 {{ request()->routeIs('manager.report') ? 'bg-blue-600 pl-5 shadow-md' : '' }}">
+                   <i class="fas fa-file-alt"></i>
+                   <span>Laporan Lengkap</span>
                 </a>
             </nav>
 

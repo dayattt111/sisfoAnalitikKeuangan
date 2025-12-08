@@ -4,24 +4,151 @@ namespace App\Http\Controllers\Manager;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Transaction;
+use App\Models\User;
+use App\Models\ActivityLog;
+use Illuminate\Support\Facades\Auth;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class TransactionReportController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        // Data dummy transaksi (bisa diganti dengan model Transaction::all())
-        $transactions = [
-            ['id' => 1, 'nama_staff' => 'Andi', 'tanggal' => '2025-01-05', 'jenis' => 'Pemasukan', 'jumlah' => 2500000, 'keterangan' => 'Penjualan Produk A'],
-            ['id' => 2, 'nama_staff' => 'Budi', 'tanggal' => '2025-01-07', 'jenis' => 'Pengeluaran', 'jumlah' => 1500000, 'keterangan' => 'Pembelian Bahan'],
-            ['id' => 3, 'nama_staff' => 'Citra', 'tanggal' => '2025-02-01', 'jenis' => 'Pemasukan', 'jumlah' => 3200000, 'keterangan' => 'Layanan Servis'],
-            ['id' => 4, 'nama_staff' => 'Dina', 'tanggal' => '2025-02-10', 'jenis' => 'Pengeluaran', 'jumlah' => 500000, 'keterangan' => 'Transportasi'],
-        ];
+        $query = Transaction::with('user');
 
-        // Hitung total pemasukan dan pengeluaran
-        $totalPemasukan = collect($transactions)->where('jenis', 'Pemasukan')->sum('jumlah');
-        $totalPengeluaran = collect($transactions)->where('jenis', 'Pengeluaran')->sum('jumlah');
+        if ($request->filled('start_date')) {
+            $query->whereDate('tanggal', '>=', $request->start_date);
+        }
+
+        if ($request->filled('end_date')) {
+            $query->whereDate('tanggal', '<=', $request->end_date);
+        }
+
+        if ($request->filled('jenis')) {
+            $query->where('jenis', $request->jenis);
+        }
+
+        if ($request->filled('user_id')) {
+            $query->where('user_id', $request->user_id);
+        }
+
+        $transactions = $query->orderBy('tanggal', 'desc')->paginate(20);
+
+        $totalPemasukan = (clone $query)->where('jenis', 'pemasukan')->sum('jumlah');
+        $totalPengeluaran = (clone $query)->where('jenis', 'pengeluaran')->sum('jumlah');
         $saldoAkhir = $totalPemasukan - $totalPengeluaran;
 
-        return view('manager.transaction.index', compact('transactions', 'totalPemasukan', 'totalPengeluaran', 'saldoAkhir'));
+        $staffList = User::where('role', 'staff')->orderBy('name')->get();
+
+        return view('manager.transaction.index', compact(
+            'transactions',
+            'totalPemasukan',
+            'totalPengeluaran',
+            'saldoAkhir',
+            'staffList'
+        ));
+    }
+
+    public function show(Transaction $transaction)
+    {
+        $transaction->load('user', 'financialReport');
+        return view('manager.transaction.show', compact('transaction'));
+    }
+
+    public function downloadPdf(Request $request)
+    {
+        $query = Transaction::with('user');
+
+        if ($request->filled('start_date')) {
+            $query->whereDate('tanggal', '>=', $request->start_date);
+        }
+
+        if ($request->filled('end_date')) {
+            $query->whereDate('tanggal', '<=', $request->end_date);
+        }
+
+        if ($request->filled('jenis')) {
+            $query->where('jenis', $request->jenis);
+        }
+
+        if ($request->filled('user_id')) {
+            $query->where('user_id', $request->user_id);
+        }
+
+        $transactions = $query->orderBy('tanggal', 'desc')->get();
+
+        $totalPemasukan = $transactions->where('jenis', 'pemasukan')->sum('jumlah');
+        $totalPengeluaran = $transactions->where('jenis', 'pengeluaran')->sum('jumlah');
+        $saldoAkhir = $totalPemasukan - $totalPengeluaran;
+
+        $pdf = Pdf::loadView('manager.transaction.pdf', compact(
+            'transactions',
+            'totalPemasukan',
+            'totalPengeluaran',
+            'saldoAkhir',
+            'request'
+        ));
+
+        ActivityLog::create([
+            'user_id' => Auth::id(),
+            'activity' => 'Download laporan transaksi (PDF) - ' . $transactions->count() . ' transaksi',
+        ]);
+
+        return $pdf->download('laporan-transaksi-' . now()->format('YmdHis') . '.pdf');
+    }
+
+    public function downloadCsv(Request $request)
+    {
+        $query = Transaction::with('user');
+
+        if ($request->filled('start_date')) {
+            $query->whereDate('tanggal', '>=', $request->start_date);
+        }
+
+        if ($request->filled('end_date')) {
+            $query->whereDate('tanggal', '<=', $request->end_date);
+        }
+
+        if ($request->filled('jenis')) {
+            $query->where('jenis', $request->jenis);
+        }
+
+        if ($request->filled('user_id')) {
+            $query->where('user_id', $request->user_id);
+        }
+
+        $transactions = $query->orderBy('tanggal', 'desc')->get();
+
+        ActivityLog::create([
+            'user_id' => Auth::id(),
+            'activity' => 'Download laporan transaksi (Excel) - ' . $transactions->count() . ' transaksi',
+        ]);
+
+        $filename = 'laporan-transaksi-' . now()->format('YmdHis') . '.csv';
+        
+        $headers = [
+            'Content-Type' => 'text/csv',
+            'Content-Disposition' => 'attachment; filename="' . $filename . '"',
+        ];
+
+        $callback = function() use ($transactions) {
+            $file = fopen('php://output', 'w');
+            fputcsv($file, ['No', 'Tanggal', 'Staff', 'Jenis', 'Jumlah', 'Keterangan']);
+
+            foreach ($transactions as $index => $transaction) {
+                fputcsv($file, [
+                    $index + 1,
+                    $transaction->tanggal,
+                    $transaction->user->name ?? '-',
+                    ucfirst($transaction->jenis),
+                    $transaction->jumlah,
+                    $transaction->keterangan ?? '-',
+                ]);
+            }
+
+            fclose($file);
+        };
+
+        return response()->stream($callback, 200, $headers);
     }
 }

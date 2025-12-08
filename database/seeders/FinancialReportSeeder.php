@@ -48,9 +48,10 @@ class FinancialReportSeeder extends Seeder
                 'komentar_manager' => 'Laporan bulan ' . $data['name'] . ' sudah sesuai. Pemasukan meningkat dibanding bulan sebelumnya. Pertahankan kinerja yang baik.',
             ]);
 
-            // Add transactions for report 1
+            // Add transactions for report 1 (by Staff 1)
             Transaction::create([
                 'financial_report_id' => $report1->id,
+                'user_id' => $staff1->id,
                 'tanggal' => now()->setMonth($month)->setDay(5),
                 'keterangan' => 'Penjualan Produk A',
                 'jenis' => 'pemasukan',
@@ -59,6 +60,7 @@ class FinancialReportSeeder extends Seeder
 
             Transaction::create([
                 'financial_report_id' => $report1->id,
+                'user_id' => $staff1->id,
                 'tanggal' => now()->setMonth($month)->setDay(15),
                 'keterangan' => 'Penjualan Produk B',
                 'jenis' => 'pemasukan',
@@ -67,6 +69,7 @@ class FinancialReportSeeder extends Seeder
 
             Transaction::create([
                 'financial_report_id' => $report1->id,
+                'user_id' => $staff1->id,
                 'tanggal' => now()->setMonth($month)->setDay(10),
                 'keterangan' => 'Biaya Operasional',
                 'jenis' => 'pengeluaran',
@@ -75,6 +78,7 @@ class FinancialReportSeeder extends Seeder
 
             Transaction::create([
                 'financial_report_id' => $report1->id,
+                'user_id' => $staff1->id,
                 'tanggal' => now()->setMonth($month)->setDay(20),
                 'keterangan' => 'Gaji Karyawan',
                 'jenis' => 'pengeluaran',
@@ -107,9 +111,10 @@ class FinancialReportSeeder extends Seeder
                 'komentar_manager' => $komentar,
             ]);
 
-            // Add transactions for report 2
+            // Add transactions for report 2 (by Staff 2)
             Transaction::create([
                 'financial_report_id' => $report2->id,
+                'user_id' => $staff2->id,
                 'tanggal' => now()->setMonth($month)->setDay(7),
                 'keterangan' => 'Penjualan Jasa Konsultasi',
                 'jenis' => 'pemasukan',
@@ -118,6 +123,7 @@ class FinancialReportSeeder extends Seeder
 
             Transaction::create([
                 'financial_report_id' => $report2->id,
+                'user_id' => $staff2->id,
                 'tanggal' => now()->setMonth($month)->setDay(12),
                 'keterangan' => 'Biaya Transportasi',
                 'jenis' => 'pengeluaran',
@@ -142,6 +148,7 @@ class FinancialReportSeeder extends Seeder
 
                 Transaction::create([
                     'financial_report_id' => $report3->id,
+                    'user_id' => $staff1->id,
                     'tanggal' => now()->subYear()->setMonth($month)->setDay(10),
                     'keterangan' => 'Transaksi tidak lengkap',
                     'jenis' => 'pemasukan',

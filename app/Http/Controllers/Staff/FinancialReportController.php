@@ -28,14 +28,21 @@ class FinancialReportController extends Controller
 
     public function create()
     {
-        return view('staff.reports.create');
+        // Get available years from fiscal_years table
+        $availableYears = \App\Models\FiscalYear::where('is_active', true)
+            ->orderBy('year', 'desc')
+            ->pluck('year');
+
+        return view('staff.reports.create', compact('availableYears'));
     }
 
     public function store(Request $request)
     {
         $validated = $request->validate([
             'bulan' => 'required|integer|min:1|max:12',
-            'tahun' => 'required|integer|min:2020|max:' . (date('Y') + 1),
+            'tahun' => 'required|integer|min:2020|max:2100|exists:fiscal_years,year',
+        ], [
+            'tahun.exists' => 'Tahun yang dipilih belum tersedia. Hubungi admin untuk menambahkan tahun ini.',
         ]);
 
         // Check if report already exists for this month/year

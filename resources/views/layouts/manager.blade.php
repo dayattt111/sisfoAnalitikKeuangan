@@ -12,42 +12,42 @@
 
         {{-- SIDEBAR --}}
         <aside id="sidebar"
-               class="w-64 bg-slate-800 text-white flex flex-col shadow-lg transform transition-transform duration-300 lg:translate-x-0 -translate-x-full fixed lg:static z-50">
+               class="w-64 bg-gray-900 text-white flex flex-col shadow-xl transform transition-transform duration-300 lg:translate-x-0 -translate-x-full fixed lg:static z-50">
             
             {{-- Logo / Judul --}}
-            <div class="p-6 text-xl font-semibold border-b border-slate-700">
+            <div class="p-6 text-xl font-semibold border-b border-gray-800 bg-gray-900">
                 <span class="text-white">Manager Panel</span>
             </div>
 
             {{-- Navigasi --}}
             <nav class="flex-1 p-4 space-y-1 mt-2">
                 <a href="{{ route('manager.dashboard') }}"
-                   class="flex items-center gap-3 px-4 py-2.5 rounded-md text-sm font-medium transition-colors duration-150 {{ request()->routeIs('manager.dashboard') ? 'bg-slate-700 text-white' : 'text-slate-300 hover:bg-slate-700 hover:text-white' }}">
+                   class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition-all duration-150 {{ request()->routeIs('manager.dashboard') ? 'bg-emerald-600 text-white shadow-md' : 'text-gray-300 hover:bg-gray-800 hover:text-white' }}">
                    <i class="fas fa-chart-line w-5"></i>
                    <span>Dashboard</span>
                 </a>
 
                 <a href="{{ route('manager.finance.index') }}"
-                   class="flex items-center gap-3 px-4 py-2.5 rounded-md text-sm font-medium transition-colors duration-150 {{ request()->routeIs('manager.finance.*') ? 'bg-slate-700 text-white' : 'text-slate-300 hover:bg-slate-700 hover:text-white' }}">
+                   class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition-all duration-150 {{ request()->routeIs('manager.finance.*') ? 'bg-emerald-600 text-white shadow-md' : 'text-gray-300 hover:bg-gray-800 hover:text-white' }}">
                    <i class="fas fa-chart-bar w-5"></i>
                    <span>Ringkasan Keuangan</span>
                 </a>
                 <a href="{{ route('manager.transaction.index') }}"
-                   class="flex items-center gap-3 px-4 py-2.5 rounded-md text-sm font-medium transition-colors duration-150 {{ request()->routeIs('manager.transaction.*') ? 'bg-slate-700 text-white' : 'text-slate-300 hover:bg-slate-700 hover:text-white' }}">
+                   class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition-all duration-150 {{ request()->routeIs('manager.transaction.*') ? 'bg-emerald-600 text-white shadow-md' : 'text-gray-300 hover:bg-gray-800 hover:text-white' }}">
                    <i class="fas fa-exchange-alt w-5"></i>
                    <span>Laporan Transaksi</span>
                 </a>
                 <a href="{{ route('manager.report.index') }}"
-                   class="flex items-center gap-3 px-4 py-2.5 rounded-md text-sm font-medium transition-colors duration-150 {{ request()->routeIs('manager.report.*') ? 'bg-slate-700 text-white' : 'text-slate-300 hover:bg-slate-700 hover:text-white' }}">
+                   class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition-all duration-150 {{ request()->routeIs('manager.report.*') ? 'bg-emerald-600 text-white shadow-md' : 'text-gray-300 hover:bg-gray-800 hover:text-white' }}">
                    <i class="fas fa-clipboard-check w-5"></i>
                    <span>Validasi Laporan</span>
                 </a>
             </nav>
 
             {{-- Footer Sidebar --}}
-            <div class="p-4 border-t border-slate-700 space-y-1">
+            <div class="p-4 border-t border-gray-800 space-y-1">
                 <a href="{{ route('profile.edit') }}"
-                   class="flex items-center gap-3 px-4 py-2.5 rounded-md text-sm font-medium text-slate-300 hover:bg-slate-700 hover:text-white transition-colors duration-150">
+                   class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium text-gray-300 hover:bg-gray-800 hover:text-white transition-all duration-150">
                    <i class="fas fa-user-cog w-5"></i>
                    <span>Edit Profil</span>
                 </a>
@@ -55,7 +55,7 @@
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
                     <button type="submit"
-                        class="flex items-center gap-3 w-full text-left px-4 py-2.5 rounded-md text-sm font-medium text-slate-300 hover:bg-red-600 hover:text-white transition-colors duration-150">
+                        class="flex items-center gap-3 w-full text-left px-4 py-2.5 rounded-lg text-sm font-medium text-gray-300 hover:bg-red-600 hover:text-white transition-all duration-150">
                         <i class="fas fa-sign-out-alt w-5"></i>
                         <span>Logout</span>
                     </button>

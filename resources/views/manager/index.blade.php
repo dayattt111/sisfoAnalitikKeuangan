@@ -40,11 +40,11 @@
             </a> 
             <a href="{{ route('manager.transaction.index') }}"
                 class="inline-flex items-center bg-blue-600 hover:bg-blue-700 text-white font-semibold px-5 py-3 rounded-lg transition">
-                👥 Laporan Transaksi
+                💳 Laporan Transaksi
             </a>
-            <a href="{{ route('manager.report') }}"
-                class="inline-flex items-center bg-blue-600 hover:bg-blue-700 text-white font-semibold px-5 py-3 rounded-lg transition">
-                👥 Laporan 
+            <a href="{{ route('manager.report.index') }}"
+                class="inline-flex items-center bg-purple-600 hover:bg-purple-700 text-white font-semibold px-5 py-3 rounded-lg transition">
+                ✅ Validasi Laporan
             </a>
         </div>
     </div>

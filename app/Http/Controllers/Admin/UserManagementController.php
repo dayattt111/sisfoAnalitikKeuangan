@@ -14,6 +14,12 @@ class UserManagementController extends Controller
     public function index()
     {
         $users = User::where('role', '!=', 'admin')->latest()->get();
+        
+        ActivityLog::create([
+            'user_id' => Auth::id(),
+            'activity' => 'Admin melihat daftar user management',
+        ]);
+        
         return view('admin.users.index', compact('users'));
     }
 

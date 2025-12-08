@@ -40,6 +40,11 @@ class TransactionReportController extends Controller
 
         $staffList = User::where('role', 'staff')->orderBy('name')->get();
 
+        ActivityLog::create([
+            'user_id' => Auth::id(),
+            'activity' => 'Manager melihat laporan transaksi',
+        ]);
+
         return view('manager.transaction.index', compact(
             'transactions',
             'totalPemasukan',

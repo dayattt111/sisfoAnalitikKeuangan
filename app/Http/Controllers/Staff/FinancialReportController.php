@@ -18,6 +18,11 @@ class FinancialReportController extends Controller
             ->orderBy('created_at', 'desc')
             ->paginate(10);
 
+        ActivityLog::create([
+            'user_id' => Auth::id(),
+            'activity' => 'Staff melihat daftar laporan keuangan',
+        ]);
+
         return view('staff.reports.index', compact('reports'));
     }
 
@@ -29,28 +34,36 @@ class FinancialReportController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'judul' => 'required|string|max:255',
-            'deskripsi' => 'nullable|string',
-            'periode_mulai' => 'required|date',
-            'periode_akhir' => 'required|date|after_or_equal:periode_mulai',
+            'bulan' => 'required|integer|min:1|max:12',
+            'tahun' => 'required|integer|min:2020|max:' . (date('Y') + 1),
         ]);
+
+        // Check if report already exists for this month/year
+        $existing = FinancialReport::where('user_id', Auth::id())
+            ->where('bulan', $validated['bulan'])
+            ->where('tahun', $validated['tahun'])
+            ->first();
+
+        if ($existing) {
+            return redirect()->back()
+                ->withErrors(['bulan' => 'Anda sudah memiliki laporan untuk periode ini.'])
+                ->withInput();
+        }
 
         $report = FinancialReport::create([
             'user_id' => Auth::id(),
-            'judul' => $validated['judul'],
-            'deskripsi' => $validated['deskripsi'],
-            'periode_mulai' => $validated['periode_mulai'],
-            'periode_akhir' => $validated['periode_akhir'],
+            'bulan' => $validated['bulan'],
+            'tahun' => $validated['tahun'],
             'status' => 'pending',
         ]);
 
         ActivityLog::create([
             'user_id' => Auth::id(),
-            'activity' => 'Membuat laporan keuangan: ' . $report->judul,
+            'activity' => 'Membuat laporan keuangan: ' . $report->bulan . '/' . $report->tahun,
         ]);
 
         return redirect()->route('staff.reports.show', $report->id)
-            ->with('success', 'Laporan keuangan berhasil dibuat!');
+            ->with('success', 'Laporan keuangan berhasil dibuat! Silakan tambahkan transaksi.');
     }
 
     public function show(FinancialReport $report)
@@ -61,15 +74,12 @@ class FinancialReportController extends Controller
 
         $report->load('transactions');
 
-        $totalPemasukan = $report->transactions()
-            ->where('jenis', 'pemasukan')
-            ->sum('jumlah');
+        ActivityLog::create([
+            'user_id' => Auth::id(),
+            'activity' => 'Melihat detail laporan keuangan: ' . $report->bulan . '/' . $report->tahun,
+        ]);
 
-        $totalPengeluaran = $report->transactions()
-            ->where('jenis', 'pengeluaran')
-            ->sum('jumlah');
-
-        return view('staff.reports.show', compact('report', 'totalPemasukan', 'totalPengeluaran'));
+        return view('staff.reports.show', compact('report'));
     }
 
     public function edit(FinancialReport $report)
@@ -98,17 +108,28 @@ class FinancialReportController extends Controller
         }
 
         $validated = $request->validate([
-            'judul' => 'required|string|max:255',
-            'deskripsi' => 'nullable|string',
-            'periode_mulai' => 'required|date',
-            'periode_akhir' => 'required|date|after_or_equal:periode_mulai',
+            'bulan' => 'required|integer|min:1|max:12',
+            'tahun' => 'required|integer|min:2020|max:' . (date('Y') + 1),
         ]);
+
+        // Check if another report exists for this month/year (excluding current)
+        $existing = FinancialReport::where('user_id', Auth::id())
+            ->where('bulan', $validated['bulan'])
+            ->where('tahun', $validated['tahun'])
+            ->where('id', '!=', $report->id)
+            ->first();
+
+        if ($existing) {
+            return redirect()->back()
+                ->withErrors(['bulan' => 'Anda sudah memiliki laporan untuk periode ini.'])
+                ->withInput();
+        }
 
         $report->update($validated);
 
         ActivityLog::create([
             'user_id' => Auth::id(),
-            'activity' => 'Mengupdate laporan keuangan: ' . $report->judul,
+            'activity' => 'Mengupdate laporan keuangan: ' . $report->bulan . '/' . $report->tahun,
         ]);
 
         return redirect()->route('staff.reports.show', $report->id)
@@ -126,12 +147,12 @@ class FinancialReportController extends Controller
                 ->with('error', 'Hanya laporan dengan status pending yang dapat dihapus!');
         }
 
-        $judul = $report->judul;
+        $periode = $report->bulan . '/' . $report->tahun;
         $report->delete();
 
         ActivityLog::create([
             'user_id' => Auth::id(),
-            'activity' => 'Menghapus laporan keuangan: ' . $judul,
+            'activity' => 'Menghapus laporan keuangan: ' . $periode,
         ]);
 
         return redirect()->route('staff.reports.index')

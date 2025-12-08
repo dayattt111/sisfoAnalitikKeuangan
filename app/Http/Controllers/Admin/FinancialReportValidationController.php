@@ -25,6 +25,11 @@ class FinancialReportValidationController extends Controller
             ->latest()
             ->paginate(20);
 
+        ActivityLog::create([
+            'user_id' => Auth::id(),
+            'activity' => 'Admin melihat monitoring laporan keuangan',
+        ]);
+
         return view('admin.reports.index', compact('managerValidated', 'allReports'));
     }
 
@@ -34,6 +39,11 @@ class FinancialReportValidationController extends Controller
         
         $totalPemasukan = $report->transactions()->where('jenis', 'pemasukan')->sum('jumlah');
         $totalPengeluaran = $report->transactions()->where('jenis', 'pengeluaran')->sum('jumlah');
+        
+        ActivityLog::create([
+            'user_id' => Auth::id(),
+            'activity' => 'Admin melihat laporan keuangan ID: ' . $report->id . ' dari staff: ' . $report->user->name,
+        ]);
         
         return view('admin.reports.show', compact('report', 'totalPemasukan', 'totalPengeluaran'));
     }

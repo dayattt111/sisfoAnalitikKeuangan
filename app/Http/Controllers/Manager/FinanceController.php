@@ -5,8 +5,10 @@ namespace App\Http\Controllers\Manager;
 use Illuminate\Http\Request;
 use App\Models\Transaction;
 use App\Models\User;
+use App\Models\ActivityLog;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class FinanceController extends Controller
 {
@@ -60,6 +62,11 @@ class FinanceController extends Controller
             ->orderByDesc('year')
             ->pluck('year');
 
+        ActivityLog::create([
+            'user_id' => Auth::id(),
+            'activity' => 'Manager melihat ringkasan keuangan tahun ' . $year,
+        ]);
+
         return view('manager.finance.index', compact(
             'monthlyData',
             'totalPemasukan',
@@ -95,6 +102,11 @@ class FinanceController extends Controller
             5 => 'Mei', 6 => 'Juni', 7 => 'Juli', 8 => 'Agustus',
             9 => 'September', 10 => 'Oktober', 11 => 'November', 12 => 'Desember'
         ];
+
+        ActivityLog::create([
+            'user_id' => Auth::id(),
+            'activity' => 'Manager melihat detail keuangan bulan ' . $bulanNames[$month] . ' ' . $year,
+        ]);
 
         return view('manager.finance.show', compact(
             'transactions',

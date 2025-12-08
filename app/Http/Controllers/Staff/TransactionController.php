@@ -41,6 +41,11 @@ class TransactionController extends Controller
             ->orderBy('created_at', 'desc')
             ->get();
 
+        ActivityLog::create([
+            'user_id' => Auth::id(),
+            'activity' => 'Staff melihat daftar transaksi',
+        ]);
+
         return view('staff.transactions.index', compact(
             'transactions',
             'totalPemasukan',
@@ -52,12 +57,13 @@ class TransactionController extends Controller
 
     public function create()
     {
-        $myReports = FinancialReport::where('user_id', Auth::id())
-            ->whereIn('status', ['pending', 'approved'])
+        $pendingReports = FinancialReport::where('user_id', Auth::id())
+            ->where('status', 'pending')
+            ->with('transactions')
             ->orderBy('created_at', 'desc')
             ->get();
 
-        return view('staff.transactions.create', compact('myReports'));
+        return view('staff.transactions.create', compact('pendingReports'));
     }
 
     public function store(Request $request)
@@ -104,6 +110,11 @@ class TransactionController extends Controller
 
         $transaction->load('financialReport');
 
+        ActivityLog::create([
+            'user_id' => Auth::id(),
+            'activity' => 'Melihat detail transaksi: ' . $transaction->jenis . ' Rp ' . number_format($transaction->jumlah, 0, ',', '.'),
+        ]);
+
         return view('staff.transactions.show', compact('transaction'));
     }
 
@@ -113,12 +124,12 @@ class TransactionController extends Controller
             abort(403, 'Unauthorized action.');
         }
 
-        $myReports = FinancialReport::where('user_id', Auth::id())
-            ->whereIn('status', ['pending', 'approved'])
+        $pendingReports = FinancialReport::where('user_id', Auth::id())
+            ->where('status', 'pending')
             ->orderBy('created_at', 'desc')
             ->get();
 
-        return view('staff.transactions.edit', compact('transaction', 'myReports'));
+        return view('staff.transactions.edit', compact('transaction', 'pendingReports'));
     }
 
     public function update(Request $request, Transaction $transaction)

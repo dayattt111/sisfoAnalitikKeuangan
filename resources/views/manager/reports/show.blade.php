@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+@extends('layouts.manager')
 
 @section('title', 'Detail Laporan Keuangan')
 
@@ -7,7 +7,7 @@
     <div class="bg-white rounded-lg shadow-md p-6">
         <div class="flex justify-between items-center mb-6">
             <h3 class="text-2xl font-bold text-gray-800">Detail Laporan #{{ $report->id }}</h3>
-            <a href="{{ route('admin.reports.index') }}" class="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600">
+            <a href="{{ route('manager.report.index') }}" class="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600">
                 ⬅️ Kembali
             </a>
         </div>
@@ -81,11 +81,11 @@
             </div>
         </div>
 
-        <!-- Komentar Manager -->
+        <!-- Evaluasi Manager (jika sudah ada) -->
         @if($report->komentar_manager)
         <div class="bg-green-50 border-l-4 border-green-500 p-4 rounded mb-6">
             <h4 class="font-semibold text-green-800 mb-2 flex items-center">
-                <i class="fas fa-user-tie mr-2"></i>Evaluasi dari Manager
+                <i class="fas fa-user-tie mr-2"></i>Evaluasi Manager
             </h4>
             <p class="text-gray-700 text-sm">{{ $report->komentar_manager }}</p>
             @if($report->validated_at)
@@ -96,37 +96,13 @@
         </div>
         @endif
 
-        <!-- Komentar Admin (jika ada) -->
+        <!-- Catatan Admin (jika ada) -->
         @if($report->komentar_admin)
         <div class="bg-blue-50 border-l-4 border-blue-500 p-4 rounded mb-6">
             <h4 class="font-semibold text-blue-800 mb-2 flex items-center">
                 <i class="fas fa-user-shield mr-2"></i>Catatan dari Admin
             </h4>
             <p class="text-gray-700 text-sm">{{ $report->komentar_admin }}</p>
-        </div>
-        @endif
-
-        <!-- Form Tambah Komentar Admin -->
-        @if($report->status !== 'pending' && !$report->komentar_admin)
-        <div class="bg-white border-2 border-blue-300 rounded-lg p-4 mb-6">
-            <h4 class="font-semibold text-gray-800 mb-3 flex items-center">
-                <i class="fas fa-comment-medical mr-2 text-blue-600"></i>Tambahkan Catatan Admin
-            </h4>
-            <form action="{{ route('admin.reports.comment', $report->id) }}" method="POST">
-                @csrf
-                <div class="mb-3">
-                    <textarea name="komentar_admin" rows="4" required
-                              class="w-full border-gray-300 rounded-lg px-4 py-2 border focus:ring-2 focus:ring-blue-500"
-                              placeholder="Berikan catatan atau evaluasi tambahan untuk laporan ini..."></textarea>
-                    @error('komentar_admin')
-                    <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
-                    @enderror
-                </div>
-                <button type="submit" 
-                        class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 font-semibold">
-                    <i class="fas fa-paper-plane mr-2"></i>Kirim Catatan
-                </button>
-            </form>
         </div>
         @endif
 
@@ -174,6 +150,69 @@
                 <p class="text-gray-500 text-center py-4">Tidak ada transaksi dalam laporan ini.</p>
             @endif
         </div>
+
+        <!-- Form Validasi (jika status pending) -->
+        @if($report->status === 'pending')
+        <div class="border-t-2 border-gray-200 pt-6">
+            <h4 class="font-semibold text-gray-800 mb-4 text-lg">
+                <i class="fas fa-clipboard-check mr-2 text-blue-600"></i>Validasi Laporan
+            </h4>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <!-- Form Setuju -->
+                <div class="bg-green-50 border-2 border-green-300 rounded-lg p-4">
+                    <h5 class="font-semibold text-green-800 mb-3">
+                        <i class="fas fa-check-circle mr-2"></i>Setujui Laporan
+                    </h5>
+                    <form action="{{ route('manager.report.approve', $report->id) }}" method="POST">
+                        @csrf
+                        <div class="mb-3">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">
+                                Evaluasi & Komentar <span class="text-red-500">*</span>
+                            </label>
+                            <textarea name="komentar_manager" rows="4" required
+                                      class="w-full border-gray-300 rounded-lg px-3 py-2 border focus:ring-2 focus:ring-green-500 text-sm"
+                                      placeholder="Berikan evaluasi positif dan saran untuk peningkatan..."></textarea>
+                            @error('komentar_manager')
+                            <p class="text-red-600 text-xs mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
+                        <button type="submit" 
+                                onclick="return confirm('Yakin ingin menyetujui laporan ini?')"
+                                class="w-full bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 font-semibold">
+                            <i class="fas fa-check mr-2"></i>Setujui Laporan
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Form Tolak -->
+                <div class="bg-red-50 border-2 border-red-300 rounded-lg p-4">
+                    <h5 class="font-semibold text-red-800 mb-3">
+                        <i class="fas fa-times-circle mr-2"></i>Tolak Laporan
+                    </h5>
+                    <form action="{{ route('manager.report.reject', $report->id) }}" method="POST">
+                        @csrf
+                        <div class="mb-3">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">
+                                Alasan Penolakan & Saran Perbaikan <span class="text-red-500">*</span>
+                            </label>
+                            <textarea name="komentar_manager" rows="4" required
+                                      class="w-full border-gray-300 rounded-lg px-3 py-2 border focus:ring-2 focus:ring-red-500 text-sm"
+                                      placeholder="Jelaskan alasan penolakan dan berikan saran perbaikan yang jelas..."></textarea>
+                            @error('komentar_manager')
+                            <p class="text-red-600 text-xs mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
+                        <button type="submit" 
+                                onclick="return confirm('Yakin ingin menolak laporan ini?')"
+                                class="w-full bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 font-semibold">
+                            <i class="fas fa-times mr-2"></i>Tolak Laporan
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        @endif
     </div>
 </div>
 @endsection

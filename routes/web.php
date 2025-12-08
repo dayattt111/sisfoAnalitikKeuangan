@@ -26,8 +26,7 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->as('admin.')->group(
     
     Route::get('/reports', [FinancialReportValidationController::class, 'index'])->name('reports.index');
     Route::get('/reports/{report}', [FinancialReportValidationController::class, 'show'])->name('reports.show');
-    Route::post('/reports/{report}/approve', [FinancialReportValidationController::class, 'approve'])->name('reports.approve');
-    Route::post('/reports/{report}/reject', [FinancialReportValidationController::class, 'reject'])->name('reports.reject');
+    Route::post('/reports/{report}/comment', [FinancialReportValidationController::class, 'addComment'])->name('reports.comment');
     
     Route::get('/activity-logs', [ActivityLogController::class, 'index'])->name('activity-logs.index');
     });
@@ -45,7 +44,10 @@ Route::middleware(['role:manager'])->prefix('manager')->as('manager.')->group(fu
     Route::get('/transaction-download-pdf', [TransactionReportController::class, 'downloadPdf'])->name('transaction.download-pdf');
     Route::get('/transaction-download-csv', [TransactionReportController::class, 'downloadCsv'])->name('transaction.download-csv');
     
-    Route::get('/report', [ReportController::class, 'index'])->name('report');
+    Route::get('/report', [ReportController::class, 'index'])->name('report.index');
+    Route::get('/report/{report}', [ReportController::class, 'show'])->name('report.show');
+    Route::post('/report/{report}/approve', [ReportController::class, 'approve'])->name('report.approve');
+    Route::post('/report/{report}/reject', [ReportController::class, 'reject'])->name('report.reject');
     });
 
     // Staff Routes

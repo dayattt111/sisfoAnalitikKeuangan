@@ -3,14 +3,100 @@
 namespace App\Http\Controllers\Manager;
 
 use App\Http\Controllers\Controller;
-use Carbon\Carbon; // Untuk keperluan formatting tanggal/waktu (opsional)
+use App\Models\FinancialReport;
+use App\Models\ActivityLog;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ReportController extends Controller
 {
     /**
-     * Menampilkan rekapitulasi keuangan, staff, dan forecast (dummy data).
+     * Menampilkan daftar laporan yang perlu divalidasi
      */
     public function index()
+    {
+        // Laporan pending yang perlu divalidasi
+        $pendingReports = FinancialReport::where('status', 'pending')
+            ->with(['user', 'transactions'])
+            ->latest()
+            ->get();
+
+        // Laporan yang sudah divalidasi
+        $validatedReports = FinancialReport::whereIn('status', ['approved', 'rejected'])
+            ->with(['user', 'transactions'])
+            ->latest('validated_at')
+            ->paginate(20);
+
+        return view('manager.reports.index', compact('pendingReports', 'validatedReports'));
+    }
+
+    /**
+     * Menampilkan detail laporan
+     */
+    public function show(FinancialReport $report)
+    {
+        $report->load(['user', 'transactions']);
+        
+        $totalPemasukan = $report->transactions()->where('jenis', 'pemasukan')->sum('jumlah');
+        $totalPengeluaran = $report->transactions()->where('jenis', 'pengeluaran')->sum('jumlah');
+        
+        return view('manager.reports.show', compact('report', 'totalPemasukan', 'totalPengeluaran'));
+    }
+
+    /**
+     * Menyetujui laporan dengan komentar
+     */
+    public function approve(Request $request, FinancialReport $report)
+    {
+        $request->validate([
+            'komentar_manager' => 'required|string|max:1000'
+        ]);
+
+        $report->update([
+            'status' => 'approved',
+            'komentar_manager' => $request->komentar_manager,
+            'validated_by' => Auth::id(),
+            'validated_at' => now(),
+        ]);
+
+        ActivityLog::create([
+            'user_id' => Auth::id(),
+            'activity' => 'Menyetujui laporan keuangan ID: ' . $report->id . ' dari staff: ' . $report->user->name,
+        ]);
+
+        return redirect()->route('manager.report.index')
+            ->with('success', 'Laporan berhasil disetujui dengan evaluasi!');
+    }
+
+    /**
+     * Menolak laporan dengan komentar
+     */
+    public function reject(Request $request, FinancialReport $report)
+    {
+        $request->validate([
+            'komentar_manager' => 'required|string|max:1000'
+        ]);
+
+        $report->update([
+            'status' => 'rejected',
+            'komentar_manager' => $request->komentar_manager,
+            'validated_by' => Auth::id(),
+            'validated_at' => now(),
+        ]);
+
+        ActivityLog::create([
+            'user_id' => Auth::id(),
+            'activity' => 'Menolak laporan keuangan ID: ' . $report->id . ' dari staff: ' . $report->user->name,
+        ]);
+
+        return redirect()->route('manager.report.index')
+            ->with('success', 'Laporan ditolak dengan catatan evaluasi!');
+    }
+
+    /**
+     * Legacy method - keeping for backwards compatibility
+     */
+    public function oldIndex()
     {
         // 1. Data Transaksi Dummy
         $transactions = [

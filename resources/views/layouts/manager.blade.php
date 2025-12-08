@@ -37,10 +37,10 @@
                    <i class="fas fa-exchange-alt"></i>
                    <span>Laporan Transaksi</span>
                 </a>
-                <a href="{{ route('manager.report') }}"
-                   class="flex items-center gap-2 px-4 py-2 rounded-lg transition-all duration-200 hover:bg-blue-500 hover:pl-5 {{ request()->routeIs('manager.report') ? 'bg-blue-600 pl-5 shadow-md' : '' }}">
-                   <i class="fas fa-file-alt"></i>
-                   <span>Laporan Lengkap</span>
+                <a href="{{ route('manager.report.index') }}"
+                   class="flex items-center gap-2 px-4 py-2 rounded-lg transition-all duration-200 hover:bg-blue-500 hover:pl-5 {{ request()->routeIs('manager.report.*') ? 'bg-blue-600 pl-5 shadow-md' : '' }}">
+                   <i class="fas fa-clipboard-check"></i>
+                   <span>Validasi Laporan</span>
                 </a>
             </nav>
 

@@ -1,10 +1,10 @@
-@extends('layouts.admin')
+@extends('layouts.manager')
 
-@section('title', 'Monitoring Laporan')
+@section('title', 'Validasi Laporan Keuangan')
 
 @section('content')
 <div class="container mx-auto px-4 py-6">
-    <h1 class="text-3xl font-bold text-gray-900 mb-6">Monitoring Laporan Keuangan</h1>
+    <h1 class="text-3xl font-bold text-gray-900 mb-6">Validasi Laporan Keuangan</h1>
 
     @if(session('success'))
     <div class="mb-4 p-4 bg-green-100 border border-green-300 text-green-800 rounded">
@@ -12,15 +12,57 @@
     </div>
     @endif
 
-    <!-- Laporan yang Sudah Divalidasi Manager (Perlu Review Admin) -->
+    <!-- Laporan Pending -->
     <div class="bg-white rounded-lg shadow-md p-6 mb-6">
         <h2 class="text-xl font-semibold text-gray-800 mb-4">
-            <i class="fas fa-clipboard-check mr-2 text-blue-600"></i>
-            Laporan Tervalidasi Manager - Perlu Review Admin
+            <i class="fas fa-clock mr-2 text-yellow-600"></i>
+            Laporan Menunggu Validasi
         </h2>
         
-        @if($managerValidated->isEmpty())
-        <p class="text-gray-600">Tidak ada laporan yang menunggu review admin.</p>
+        @if($pendingReports->isEmpty())
+        <p class="text-gray-600">Tidak ada laporan yang menunggu validasi.</p>
+        @else
+        <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Staff</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Periode</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Jumlah Transaksi</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Tanggal</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                    @foreach($pendingReports as $report)
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-6 py-4 whitespace-nowrap">{{ $report->user->name }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">{{ $report->bulan }}/{{ $report->tahun }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">{{ $report->transactions->count() }} transaksi</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm">{{ $report->created_at->format('d/m/Y') }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm">
+                            <a href="{{ route('manager.report.show', $report->id) }}" 
+                               class="inline-flex items-center px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700">
+                                <i class="fas fa-eye mr-1"></i> Validasi
+                            </a>
+                        </td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+        @endif
+    </div>
+
+    <!-- Riwayat Validasi -->
+    <div class="bg-white rounded-lg shadow-md p-6">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4">
+            <i class="fas fa-history mr-2 text-gray-600"></i>
+            Riwayat Validasi
+        </h2>
+        
+        @if($validatedReports->isEmpty())
+        <p class="text-gray-600">Belum ada riwayat validasi.</p>
         @else
         <div class="overflow-x-auto">
             <table class="min-w-full divide-y divide-gray-200">
@@ -29,13 +71,13 @@
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Staff</th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Periode</th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Komentar Manager</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Komentar</th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Tanggal Validasi</th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Aksi</th>
                     </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200">
-                    @foreach($managerValidated as $report)
+                    @foreach($validatedReports as $report)
                     <tr class="hover:bg-gray-50">
                         <td class="px-6 py-4 whitespace-nowrap">{{ $report->user->name }}</td>
                         <td class="px-6 py-4 whitespace-nowrap">{{ $report->bulan }}/{{ $report->tahun }}</td>
@@ -57,79 +99,7 @@
                             {{ $report->validated_at ? $report->validated_at->format('d/m/Y H:i') : '-' }}
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm">
-                            <a href="{{ route('admin.reports.show', $report->id) }}" 
-                               class="inline-flex items-center px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700">
-                                <i class="fas fa-eye mr-1"></i> Review
-                            </a>
-                        </td>
-                    </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
-        @endif
-    </div>
-
-    <!-- Semua Laporan -->
-    <div class="bg-white rounded-lg shadow-md p-6">
-        <h2 class="text-xl font-semibold text-gray-800 mb-4">
-            <i class="fas fa-list mr-2 text-gray-600"></i>
-            Semua Laporan
-        </h2>
-        
-        @if($allReports->isEmpty())
-        <p class="text-gray-600">Belum ada laporan.</p>
-        @else
-        <div class="overflow-x-auto">
-            <table class="min-w-full divide-y divide-gray-200">
-                <thead class="bg-gray-50">
-                    <tr>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Staff</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Periode</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Komentar Manager</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Komentar Admin</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Tanggal</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Aksi</th>
-                    </tr>
-                </thead>
-                <tbody class="bg-white divide-y divide-gray-200">
-                    @foreach($allReports as $report)
-                    <tr class="hover:bg-gray-50">
-                        <td class="px-6 py-4 whitespace-nowrap">{{ $report->user->name }}</td>
-                        <td class="px-6 py-4 whitespace-nowrap">{{ $report->bulan }}/{{ $report->tahun }}</td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            @if($report->status === 'pending')
-                            <span class="px-2 py-1 text-xs font-semibold rounded bg-yellow-100 text-yellow-800">
-                                <i class="fas fa-clock mr-1"></i>Pending
-                            </span>
-                            @elseif($report->status === 'approved')
-                            <span class="px-2 py-1 text-xs font-semibold rounded bg-green-100 text-green-800">
-                                <i class="fas fa-check-circle mr-1"></i>Disetujui
-                            </span>
-                            @else
-                            <span class="px-2 py-1 text-xs font-semibold rounded bg-red-100 text-red-800">
-                                <i class="fas fa-times-circle mr-1"></i>Ditolak
-                            </span>
-                            @endif
-                        </td>
-                        <td class="px-6 py-4">
-                            @if($report->komentar_manager)
-                            <span class="text-xs text-green-600"><i class="fas fa-comment mr-1"></i>Ada</span>
-                            @else
-                            <span class="text-xs text-gray-400">-</span>
-                            @endif
-                        </td>
-                        <td class="px-6 py-4">
-                            @if($report->komentar_admin)
-                            <span class="text-xs text-blue-600"><i class="fas fa-comment mr-1"></i>Ada</span>
-                            @else
-                            <span class="text-xs text-gray-400">-</span>
-                            @endif
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm">{{ $report->created_at->format('d/m/Y') }}</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm">
-                            <a href="{{ route('admin.reports.show', $report->id) }}" 
+                            <a href="{{ route('manager.report.show', $report->id) }}" 
                                class="text-blue-600 hover:text-blue-900">
                                 <i class="fas fa-eye mr-1"></i>Detail
                             </a>
@@ -142,7 +112,7 @@
 
         <!-- Pagination -->
         <div class="mt-4">
-            {{ $allReports->links() }}
+            {{ $validatedReports->links() }}
         </div>
         @endif
     </div>

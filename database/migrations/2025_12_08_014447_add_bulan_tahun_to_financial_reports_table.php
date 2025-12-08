@@ -12,10 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('financial_reports', function (Blueprint $table) {
-            $table->text('komentar_manager')->nullable()->after('status');
-            $table->text('komentar_admin')->nullable()->after('komentar_manager');
-            $table->timestamp('validated_at')->nullable()->after('komentar_admin');
-            $table->foreignId('validated_by')->nullable()->after('validated_at')->constrained('users')->onDelete('set null');
+            $table->integer('bulan')->nullable()->after('periode_akhir');
+            $table->integer('tahun')->nullable()->after('bulan');
         });
     }
 
@@ -25,8 +23,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('financial_reports', function (Blueprint $table) {
-            $table->dropForeign(['validated_by']);
-            $table->dropColumn(['komentar_manager', 'komentar_admin', 'validated_at', 'validated_by']);
+            $table->dropColumn(['bulan', 'tahun']);
         });
     }
 };

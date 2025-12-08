@@ -10,28 +10,43 @@ class FinancialReport extends Model
 {
     // Atribut yang boleh diisi massal
     protected $fillable = [
-        'staff_id',      // foreign key ke User sebagai staff
-        'validator_id',  // foreign key ke User sebagai validator
-        'title', 
-        'period', 
-        'amount'
+        'user_id',
+        'bulan',
+        'tahun',
+        'status',
+        'validated_by',
+        'validated_at',
+        'komentar_manager',
+        'komentar_admin',
+        // Old columns (deprecated but kept for backward compatibility)
+        'judul',
+        'deskripsi',
+        'periode_mulai',
+        'periode_akhir'
     ];
 
     /**
-     * Relasi: FinancialReport dimiliki oleh (belongs to) User sebagai staff.
+     * Relasi: FinancialReport dimiliki oleh (belongs to) User (staff yang membuat).
+     */
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+    /**
+     * Alias untuk backward compatibility
      */
     public function staff(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'staff_id');
+        return $this->user();
     }
 
     /**
      * Relasi: FinancialReport dimiliki oleh (belongs to) User sebagai validator.
-     * Method dinamai `validatedBy` untuk menunjukkan pengguna yang memvalidasi laporan.
      */
     public function validatedBy(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'validator_id');
+        return $this->belongsTo(User::class, 'validated_by');
     }
 
     /**

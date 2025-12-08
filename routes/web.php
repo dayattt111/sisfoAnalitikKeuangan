@@ -27,6 +27,8 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->as('admin.')->group(
     Route::get('/reports', [FinancialReportValidationController::class, 'index'])->name('reports.index');
     Route::get('/reports/{report}', [FinancialReportValidationController::class, 'show'])->name('reports.show');
     Route::post('/reports/{report}/comment', [FinancialReportValidationController::class, 'addComment'])->name('reports.comment');
+    Route::post('/reports/{report}/validate', [FinancialReportValidationController::class, 'validate'])->name('reports.validate');
+    Route::delete('/reports/{report}', [FinancialReportValidationController::class, 'destroy'])->name('reports.destroy');
     
     Route::get('/activity-logs', [ActivityLogController::class, 'index'])->name('activity-logs.index');
     });

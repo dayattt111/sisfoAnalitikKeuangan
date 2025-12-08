@@ -66,4 +66,48 @@ class FinancialReportValidationController extends Controller
         return redirect()->route('admin.reports.show', $report->id)
             ->with('success', 'Komentar berhasil ditambahkan!');
     }
+
+    public function validate(Request $request, FinancialReport $report)
+    {
+        $request->validate([
+            'status' => 'required|in:approved,rejected',
+            'komentar_admin' => 'required|string|max:1000'
+        ]);
+
+        $report->update([
+            'status' => $request->status,
+            'validated_by' => Auth::id(),
+            'validated_at' => now(),
+            'komentar_admin' => $request->komentar_admin,
+        ]);
+
+        ActivityLog::create([
+            'user_id' => Auth::id(),
+            'activity' => 'Admin memvalidasi laporan ID: ' . $report->id . ' dengan status: ' . $request->status,
+        ]);
+
+        $statusText = $request->status === 'approved' ? 'disetujui' : 'ditolak';
+        return redirect()->route('admin.reports.index')
+            ->with('success', 'Laporan berhasil ' . $statusText . '!');
+    }
+
+    public function destroy(FinancialReport $report)
+    {
+        $reportId = $report->id;
+        $staffName = $report->user->name;
+        
+        // Hapus semua transaksi terkait
+        $report->transactions()->delete();
+        
+        // Hapus laporan
+        $report->delete();
+
+        ActivityLog::create([
+            'user_id' => Auth::id(),
+            'activity' => 'Admin menghapus laporan ID: ' . $reportId . ' dari staff: ' . $staffName,
+        ]);
+
+        return redirect()->route('admin.reports.index')
+            ->with('success', 'Laporan dan semua transaksi terkait berhasil dihapus!');
+    }
 }

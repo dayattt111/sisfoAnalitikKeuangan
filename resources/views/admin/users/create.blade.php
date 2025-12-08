@@ -63,7 +63,7 @@
                     💾 Simpan
                 </button>
                 <a href="{{ route('admin.users.index') }}" class="flex-1 bg-gray-300 text-gray-700 px-6 py-2 rounded-lg hover:bg-gray-400 font-semibold text-center transition">
-                    ❌ Batal
+                    <i class="fas fa-times mr-1"></i> Batal
                 </a>
             </div>
         </form>

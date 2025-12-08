@@ -7,7 +7,7 @@
     {{-- Header dengan Filter Tahun --}}
     <div class="mb-6 flex items-center justify-between">
         <div>
-            <h1 class="text-3xl font-bold text-gray-800">📊 Ringkasan Keuangan</h1>
+            <h1 class="text-3xl font-bold text-gray-800">Ringkasan Keuangan</h1>
             <p class="text-gray-600 mt-2">Laporan keuangan bulanan dan tahunan</p>
         </div>
         
@@ -27,7 +27,7 @@
 
     {{-- Statistik Tahunan --}}
     <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
-        <div class="bg-gradient-to-br from-green-500 to-green-600 rounded-lg shadow-lg p-6 text-white">
+        <div class="bg-green-600 rounded-lg shadow-lg p-6 text-white">
             <div class="flex items-center justify-between">
                 <div>
                     <p class="text-green-100 text-sm font-medium">Total Pemasukan</p>
@@ -39,7 +39,7 @@
             </div>
         </div>
 
-        <div class="bg-gradient-to-br from-red-500 to-red-600 rounded-lg shadow-lg p-6 text-white">
+        <div class="bg-red-600 rounded-lg shadow-lg p-6 text-white">
             <div class="flex items-center justify-between">
                 <div>
                     <p class="text-red-100 text-sm font-medium">Total Pengeluaran</p>
@@ -51,7 +51,7 @@
             </div>
         </div>
 
-        <div class="bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg shadow-lg p-6 text-white">
+        <div class="bg-blue-600 rounded-lg shadow-lg p-6 text-white">
             <div class="flex items-center justify-between">
                 <div>
                     <p class="text-blue-100 text-sm font-medium">Saldo Akhir</p>
@@ -63,7 +63,7 @@
             </div>
         </div>
 
-        <div class="bg-gradient-to-br from-purple-500 to-purple-600 rounded-lg shadow-lg p-6 text-white">
+        <div class="bg-purple-600 rounded-lg shadow-lg p-6 text-white">
             <div class="flex items-center justify-between">
                 <div>
                     <p class="text-purple-100 text-sm font-medium">Total Transaksi</p>
@@ -79,8 +79,8 @@
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {{-- Tabel Ringkasan Bulanan --}}
         <div class="lg:col-span-2 bg-white rounded-lg shadow-md overflow-hidden">
-            <div class="bg-gradient-to-r from-green-600 to-green-700 px-6 py-4">
-                <h3 class="text-lg font-semibold text-white">📅 Ringkasan Bulanan {{ $year }}</h3>
+            <div class="bg-green-600 px-6 py-4">
+                <h3 class="text-lg font-semibold text-white">Ringkasan Bulanan {{ $year }}</h3>
             </div>
             <div class="overflow-x-auto">
                 <table class="min-w-full divide-y divide-gray-200">
@@ -137,8 +137,8 @@
 
         {{-- Top Staff Performance --}}
         <div class="bg-white rounded-lg shadow-md overflow-hidden">
-            <div class="bg-gradient-to-r from-purple-600 to-purple-700 px-6 py-4">
-                <h3 class="text-lg font-semibold text-white">🏆 Top Staff Revenue</h3>
+            <div class="bg-purple-600 px-6 py-4">
+                <h3 class="text-lg font-semibold text-white">Top Staff Revenue</h3>
             </div>
             <div class="p-6">
                 @forelse($topStaffRevenue as $index => $staff)

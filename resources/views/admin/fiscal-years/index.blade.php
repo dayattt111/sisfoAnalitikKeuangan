@@ -7,7 +7,7 @@
     <!-- Header -->
     <div class="flex justify-between items-center mb-6">
         <div>
-            <h1 class="text-3xl font-bold text-gray-800">📅 Kelola Tahun Laporan</h1>
+            <h1 class="text-3xl font-bold text-gray-800">Kelola Tahun Laporan</h1>
             <p class="text-gray-600 mt-2">Kelola tahun yang tersedia untuk pembuatan laporan keuangan</p>
         </div>
         <button onclick="document.getElementById('addYearModal').classList.remove('hidden')" 

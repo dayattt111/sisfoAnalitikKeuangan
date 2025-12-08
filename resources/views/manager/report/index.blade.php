@@ -4,9 +4,9 @@
 
 @section('content')
 <div class="container mx-auto mt-8 px-4">
-    <div class="bg-white p-6 md:p-8 rounded-xl shadow-2xl">
-        <h2 class="text-2xl md:text-3xl font-extrabold text-center mb-8 text-indigo-800">
-            📊 Rekapitulasi Keuangan & Kinerja
+    <div class="bg-white p-6 md:p-8 rounded-xl shadow-lg">
+        <h2 class="text-2xl md:text-3xl font-bold text-center mb-8 text-gray-800">
+            Rekapitulasi Keuangan & Kinerja
         </h2>
 
         {{-- 1. OVERVIEW CARDS: Pemasukan, Pengeluaran, Saldo, Margin --}}

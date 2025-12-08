@@ -4,8 +4,8 @@
 
 @section('content')
 <div class="space-y-6">
-    <div class="bg-gradient-to-r from-blue-600 to-indigo-600 text-white p-6 rounded-lg shadow">
-        <h2 class="text-2xl font-semibold mb-2">Selamat datang, {{ Auth::user()->name }} 👋</h2>
+    <div class="bg-blue-600 text-white p-6 rounded-lg shadow">
+        <h2 class="text-2xl font-semibold mb-2">Selamat datang, {{ Auth::user()->name }}</h2>
         <p class="text-blue-100">
             Anda login sebagai <strong>{{ ucfirst(Auth::user()->role) }}</strong>
         </p>

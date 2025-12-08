@@ -7,12 +7,12 @@
     {{-- Header --}}
     <div class="mb-6">
         <h1 class="text-3xl font-bold text-gray-800">Dashboard Staff</h1>
-        <p class="text-gray-600 mt-2">Selamat datang, {{ Auth::user()->name }}! 👋</p>
+        <p class="text-gray-600 mt-2">Selamat datang, {{ Auth::user()->name }}!</p>
     </div>
 
     {{-- Quick Actions --}}
     <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-        <a href="{{ route('staff.transactions.create') }}" class="bg-gradient-to-r from-blue-500 to-blue-600 text-white p-6 rounded-lg shadow-lg hover:shadow-xl transition transform hover:scale-105">
+        <a href="{{ route('staff.transactions.create') }}" class="bg-blue-600 text-white p-6 rounded-lg shadow-lg hover:shadow-xl transition transform hover:scale-105">
             <div class="flex items-center justify-between">
                 <div>
                     <p class="text-blue-100 text-sm font-medium">Input Transaksi Baru</p>
@@ -24,7 +24,7 @@
             </div>
         </a>
 
-        <a href="{{ route('staff.reports.create') }}" class="bg-gradient-to-r from-green-500 to-green-600 text-white p-6 rounded-lg shadow-lg hover:shadow-xl transition transform hover:scale-105">
+        <a href="{{ route('staff.reports.create') }}" class="bg-green-600 text-white p-6 rounded-lg shadow-lg hover:shadow-xl transition transform hover:scale-105">
             <div class="flex items-center justify-between">
                 <div>
                     <p class="text-green-100 text-sm font-medium">Buat Laporan Baru</p>
@@ -36,7 +36,7 @@
             </div>
         </a>
 
-        <a href="{{ route('staff.transactions.index') }}" class="bg-gradient-to-r from-purple-500 to-purple-600 text-white p-6 rounded-lg shadow-lg hover:shadow-xl transition transform hover:scale-105">
+        <a href="{{ route('staff.transactions.index') }}" class="bg-purple-600 text-white p-6 rounded-lg shadow-lg hover:shadow-xl transition transform hover:scale-105">
             <div class="flex items-center justify-between">
                 <div>
                     <p class="text-purple-100 text-sm font-medium">Lihat Riwayat</p>
@@ -138,15 +138,15 @@
         <div class="lg:col-span-2 bg-white rounded-lg shadow-md p-6">
             <h3 class="text-lg font-semibold mb-4 text-gray-800">Statistik Bulan Ini</h3>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div class="bg-gradient-to-br from-blue-50 to-blue-100 p-4 rounded-lg">
+                <div class="bg-blue-50 p-4 rounded-lg">
                     <p class="text-blue-700 text-sm font-medium">Transaksi Bulan Ini</p>
                     <p class="text-3xl font-bold text-blue-600 mt-2">{{ $transaksiThisMonth }}</p>
                 </div>
-                <div class="bg-gradient-to-br from-green-50 to-green-100 p-4 rounded-lg">
+                <div class="bg-green-50 p-4 rounded-lg">
                     <p class="text-green-700 text-sm font-medium">Pemasukan Bulan Ini</p>
                     <p class="text-xl font-bold text-green-600 mt-2">Rp {{ number_format($pemasukanThisMonth, 0, ',', '.') }}</p>
                 </div>
-                <div class="bg-gradient-to-br from-red-50 to-red-100 p-4 rounded-lg">
+                <div class="bg-red-50 p-4 rounded-lg">
                     <p class="text-red-700 text-sm font-medium">Pengeluaran Bulan Ini</p>
                     <p class="text-xl font-bold text-red-600 mt-2">Rp {{ number_format($pengeluaranThisMonth, 0, ',', '.') }}</p>
                 </div>
@@ -158,7 +158,7 @@
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {{-- Recent Transactions --}}
         <div class="bg-white rounded-lg shadow-md overflow-hidden">
-            <div class="bg-gradient-to-r from-blue-600 to-blue-700 px-6 py-4 flex items-center justify-between">
+            <div class="bg-blue-600 px-6 py-4 flex items-center justify-between">
                 <h3 class="text-lg font-semibold text-white">Transaksi Terbaru</h3>
                 <a href="{{ route('staff.transactions.index') }}" class="text-blue-100 hover:text-white text-sm">
                     Lihat Semua <i class="fas fa-arrow-right ml-1"></i>
@@ -193,7 +193,7 @@
 
         {{-- Recent Reports --}}
         <div class="bg-white rounded-lg shadow-md overflow-hidden">
-            <div class="bg-gradient-to-r from-green-600 to-green-700 px-6 py-4 flex items-center justify-between">
+            <div class="bg-green-600 px-6 py-4 flex items-center justify-between">
                 <h3 class="text-lg font-semibold text-white">Laporan Terbaru</h3>
                 <a href="{{ route('staff.reports.index') }}" class="text-green-100 hover:text-white text-sm">
                     Lihat Semua <i class="fas fa-arrow-right ml-1"></i>

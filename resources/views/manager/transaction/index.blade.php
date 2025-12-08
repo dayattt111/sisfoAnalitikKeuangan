@@ -5,7 +5,7 @@
 @section('content')
 <div class="container mx-auto px-4 py-8">
     <div class="mb-6">
-        <h1 class="text-3xl font-bold text-gray-800">💼 Laporan Transaksi</h1>
+        <h1 class="text-3xl font-bold text-gray-800">Laporan Transaksi</h1>
         <p class="text-gray-600 mt-2">Lihat dan download laporan transaksi keuangan</p>
     </div>
 

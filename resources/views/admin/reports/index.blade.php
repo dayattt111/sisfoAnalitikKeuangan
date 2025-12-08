@@ -214,7 +214,7 @@
                 Periode: <span id="deletePeriode" class="font-semibold"></span>
             </p>
             <p class="text-sm text-red-600 text-center mb-4">
-                ⚠️ Semua transaksi terkait juga akan dihapus!
+                <i class="fas fa-exclamation-triangle mr-1"></i> Semua transaksi terkait juga akan dihapus!
             </p>
             
             <form id="deleteForm" method="POST">

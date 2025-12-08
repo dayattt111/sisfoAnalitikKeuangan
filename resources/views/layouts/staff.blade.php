@@ -10,49 +10,50 @@
 
     <div class="flex min-h-screen overflow-hidden">
 
-        {{-- ✅ SIDEBAR --}}
+        {{-- SIDEBAR --}}
         <aside id="sidebar"
-               class="w-64 bg-gradient-to-b from-indigo-800 via-blue-800 to-blue-600 text-white flex flex-col shadow-2xl transform transition-transform duration-300 lg:translate-x-0 -translate-x-full fixed lg:static z-50">
+               class="w-64 bg-slate-800 text-white flex flex-col shadow-lg transform transition-transform duration-300 lg:translate-x-0 -translate-x-full fixed lg:static z-50">
             
             {{-- Logo / Judul --}}
-            <div class="p-6 text-2xl font-bold border-b border-blue-500 flex items-center gap-2">
-                {{-- <span class="text-blue-200 text-3xl">💼</span> --}}
+            <div class="p-6 text-xl font-semibold border-b border-slate-700">
                 <span class="text-white">Staff Panel</span>
             </div>
 
             {{-- Navigasi --}}
-            <nav class="flex-1 p-5 space-y-2 mt-3">
+            <nav class="flex-1 p-4 space-y-1 mt-2">
                 <a href="{{ route('staff.dashboard') }}"
-                   class="flex items-center gap-2 px-4 py-2 rounded-lg transition-all duration-200 hover:bg-blue-500 hover:pl-5 {{ request()->routeIs('staff.dashboard') ? 'bg-blue-600 pl-5 shadow-md' : '' }}">
-                   <i class="fas fa-home"></i>
+                   class="flex items-center gap-3 px-4 py-2.5 rounded-md text-sm font-medium transition-colors duration-150 {{ request()->routeIs('staff.dashboard') ? 'bg-slate-700 text-white' : 'text-slate-300 hover:bg-slate-700 hover:text-white' }}">
+                   <i class="fas fa-chart-line w-5"></i>
                    <span>Dashboard</span>
                 </a>
 
                 <a href="{{ route('staff.reports.index') }}"
-                   class="flex items-center gap-2 px-4 py-2 rounded-lg transition-all duration-200 hover:bg-blue-500 hover:pl-5 {{ request()->routeIs('staff.reports.*') ? 'bg-blue-600 pl-5 shadow-md' : '' }}">
-                   <i class="fas fa-file-alt"></i>
+                   class="flex items-center gap-3 px-4 py-2.5 rounded-md text-sm font-medium transition-colors duration-150 {{ request()->routeIs('staff.reports.*') ? 'bg-slate-700 text-white' : 'text-slate-300 hover:bg-slate-700 hover:text-white' }}">
+                   <i class="fas fa-file-alt w-5"></i>
                    <span>Laporan Keuangan</span>
                 </a>
 
                 <a href="{{ route('staff.transactions.index') }}"
-                   class="flex items-center gap-2 px-4 py-2 rounded-lg transition-all duration-200 hover:bg-blue-500 hover:pl-5 {{ request()->routeIs('staff.transactions.*') ? 'bg-blue-600 pl-5 shadow-md' : '' }}">
-                   <i class="fas fa-exchange-alt"></i>
+                   class="flex items-center gap-3 px-4 py-2.5 rounded-md text-sm font-medium transition-colors duration-150 {{ request()->routeIs('staff.transactions.*') ? 'bg-slate-700 text-white' : 'text-slate-300 hover:bg-slate-700 hover:text-white' }}">
+                   <i class="fas fa-exchange-alt w-5"></i>
                    <span>Riwayat Transaksi</span>
                 </a>
             </nav>
 
             {{-- Footer Sidebar --}}
-            <div class="p-5 border-t border-blue-500 space-y-2">
+            <div class="p-4 border-t border-slate-700 space-y-1">
                 <a href="{{ route('profile.edit') }}"
-                   class="flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-700 hover:bg-blue-600 transition duration-200">
-                   ⚙️ <span>Edit Profil</span>
+                   class="flex items-center gap-3 px-4 py-2.5 rounded-md text-sm font-medium text-slate-300 hover:bg-slate-700 hover:text-white transition-colors duration-150">
+                   <i class="fas fa-user-cog w-5"></i>
+                   <span>Edit Profil</span>
                 </a>
 
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
                     <button type="submit"
-                        class="flex items-center gap-2 w-full text-left px-4 py-2 rounded-lg hover:bg-red-600 transition duration-200">
-                        🚪 <span>Logout</span>
+                        class="flex items-center gap-3 w-full text-left px-4 py-2.5 rounded-md text-sm font-medium text-slate-300 hover:bg-red-600 hover:text-white transition-colors duration-150">
+                        <i class="fas fa-sign-out-alt w-5"></i>
+                        <span>Logout</span>
                     </button>
                 </form>
             </div>
@@ -61,15 +62,15 @@
         {{-- ✅ MAIN CONTENT --}}
         <main class="flex-1 flex flex-col bg-gray-50 lg:ml-0">
             {{-- Header --}}
-            <header class="bg-white shadow-md p-4 flex justify-between items-center border-b border-gray-200 sticky top-0 z-40">
+            <header class="bg-white shadow-sm p-4 flex justify-between items-center border-b border-gray-200 sticky top-0 z-40">
                 <div class="flex items-center gap-3">
-                    <button id="toggleSidebar" class="lg:hidden text-blue-700 text-2xl hover:text-blue-900">
-                        ☰
+                    <button id="toggleSidebar" class="lg:hidden text-slate-700 hover:text-slate-900">
+                        <i class="fas fa-bars text-xl"></i>
                     </button>
-                    <h1 class="text-lg lg:text-xl font-semibold text-gray-700">@yield('title', 'Dashboard Admin')</h1>
+                    <h1 class="text-lg lg:text-xl font-semibold text-gray-800">@yield('title', 'Dashboard Staff')</h1>
                 </div>
                 <div class="text-right">
-                    <p class="font-semibold text-gray-700">{{ Auth::user()->name }}</p>
+                    <p class="font-semibold text-gray-800">{{ Auth::user()->name }}</p>
                     <p class="text-sm text-gray-500 capitalize">{{ Auth::user()->role }}</p>
                 </div>
             </header>
@@ -97,16 +98,6 @@
             }
         });
     </script>
-
-    {{-- ✅ Extra Style for Glow --}}
-    <style>
-        a:hover {
-            text-shadow: 0 0 6px rgba(255, 255, 255, 0.7);
-        }
-        aside {
-            backdrop-filter: blur(6px);
-        }
-    </style>
 
 </body>
 </html>

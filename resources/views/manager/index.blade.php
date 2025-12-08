@@ -5,8 +5,8 @@
 @section('content')
 <div class="space-y-6">
     {{-- Header --}}
-    <div class="bg-gradient-to-r from-green-600 to-emerald-600 text-white p-6 rounded-lg shadow">
-        <h2 class="text-2xl font-semibold mb-2">Selamat datang, {{ Auth::user()->name }} 👋</h2>
+    <div class="bg-green-600 text-white p-6 rounded-lg shadow">
+        <h2 class="text-2xl font-semibold mb-2">Selamat datang, {{ Auth::user()->name }}</h2>
         <p class="text-green-100">
             Anda login sebagai <strong>{{ ucfirst(Auth::user()->role) }}</strong>
         </p>
@@ -36,15 +36,15 @@
         <div class="flex flex-wrap gap-4">
             <a href="{{ route('manager.finance.index') }}"
                 class="inline-flex items-center bg-green-600 hover:bg-green-700 text-white font-semibold px-5 py-3 rounded-lg transition">
-                📊 Lihat Laporan Keuangan
+                <i class="fas fa-chart-bar mr-2"></i> Lihat Laporan Keuangan
             </a> 
             <a href="{{ route('manager.transaction.index') }}"
                 class="inline-flex items-center bg-blue-600 hover:bg-blue-700 text-white font-semibold px-5 py-3 rounded-lg transition">
-                💳 Laporan Transaksi
+                <i class="fas fa-credit-card mr-2"></i> Laporan Transaksi
             </a>
             <a href="{{ route('manager.report.index') }}"
                 class="inline-flex items-center bg-purple-600 hover:bg-purple-700 text-white font-semibold px-5 py-3 rounded-lg transition">
-                ✅ Validasi Laporan
+                <i class="fas fa-check-circle mr-2"></i> Validasi Laporan
             </a>
         </div>
     </div>

@@ -43,7 +43,7 @@
 
             <div class="flex gap-3 mt-4">
                 <button type="submit" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700">
-                    🔍 Filter
+                    <i class="fas fa-filter mr-1"></i> Filter
                 </button>
                 <a href="{{ route('admin.activity-logs.index') }}" class="bg-gray-300 text-gray-700 px-6 py-2 rounded-lg hover:bg-gray-400">
                     🔄 Reset

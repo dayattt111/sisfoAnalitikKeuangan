@@ -41,13 +41,13 @@ DB_USERNAME=root
 DB_PASSWORD=
 ```
 
-### 4️⃣ Buat & Import Database
+### 4️⃣ Buat Database & Jalankan Migration
 ```bash
 # Buat database
 mysql -u root -p -e "CREATE DATABASE sistem_analitik_keuangan;"
 
-# Import data
-mysql -u root -p sistem_analitik_keuangan < database/sistem_analitik_keuangan.sql
+# Jalankan migration + seeder
+php artisan migrate --seed
 ```
 
 ### 5️⃣ Build & Run

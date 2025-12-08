@@ -66,16 +66,14 @@ DB_USERNAME=root
 DB_PASSWORD=
 ```
 
-### 4. Import Database
-Import file SQL yang sudah disediakan:
+### 4. Setup Database
+Buat database dan jalankan migration + seeder:
 ```bash
-mysql -u root -p sistem_analitik_keuangan < database/sistem_analitik_keuangan.sql
-```
+# Buat database
+mysql -u root -p -e "CREATE DATABASE sistem_analitik_keuangan;"
 
-Atau buat database baru dan jalankan migration + seeder:
-```bash
-php artisan migrate
-php artisan db:seed
+# Jalankan migration dan seeder
+php artisan migrate --seed
 ```
 
 ### 5. Build Assets

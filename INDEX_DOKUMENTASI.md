@@ -63,12 +63,13 @@ Panduan lengkap untuk Administrator:
 
 ## 🗄️ Database
 
-### Schema & Data
-📄 **[database/sistem_analitik_keuangan.sql](database/sistem_analitik_keuangan.sql)**
-- Schema lengkap semua tabel
-- Seed data (1 admin, 1 manager, 2 staff)
-- Sample transactions & reports
-- Kredensial default
+### Migrations & Seeders
+- **Migrations**: Schema untuk semua tabel (users, financial_reports, transactions, activity_logs, dll)
+- **UserSeeder.php**: 1 admin, 1 manager, 2 staff dengan activity logs
+- **FinancialReportSeeder.php**: 3 sample reports dengan 6 transactions
+- **DatabaseSeeder.php**: Orchestrates semua seeder
+
+Jalankan: `php artisan migrate --seed`
 
 ---
 

@@ -66,12 +66,12 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->as('admin.')->group(
 });
 ```
 
-### 6. ✅ Database SQL
-File lengkap untuk import:
-- `database/sistem_analitik_keuangan.sql` - Schema lengkap + seed data
-- Includes 1 admin, 1 manager, 2 staff
-- Includes sample transactions & reports
-- Includes activity logs
+### 6. ✅ Database Migrations & Seeders
+Migrations dan seeders lengkap:
+- Migrations: users, financial_reports, transactions, activity_logs, dll
+- `UserSeeder.php` - 1 admin, 1 manager, 2 staff dengan activity logs
+- `FinancialReportSeeder.php` - 3 sample reports dengan 6 transactions
+- `DatabaseSeeder.php` - Orchestrates semua seeder
 
 ### 7. ✅ Dokumentasi
 Dokumentasi lengkap telah dibuat:
@@ -191,8 +191,11 @@ keuangan-analitik/
 
 ### 1. Setup Database
 ```bash
-# Import SQL file
-mysql -u root -p sistem_analitik_keuangan < database/sistem_analitik_keuangan.sql
+# Buat database
+mysql -u root -p -e "CREATE DATABASE sistem_analitik_keuangan;"
+
+# Jalankan migration dan seeder
+php artisan migrate --seed
 ```
 
 ### 2. Install Dependencies

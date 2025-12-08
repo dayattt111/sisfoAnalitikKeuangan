@@ -23,10 +23,11 @@ Gunakan checklist ini untuk memastikan sistem siap digunakan.
 
 ### Database
 - [ ] Database `sistem_analitik_keuangan` sudah dibuat
-- [ ] SQL file berhasil diimport
-- [ ] Atau migrations berhasil dijalankan
+- [ ] Migrations berhasil dijalankan (`php artisan migrate`)
+- [ ] Seeders berhasil dijalankan (`php artisan db:seed`)
 - [ ] Tabel users, financial_reports, transactions, activity_logs ada
-- [ ] Data seed berhasil diimport (minimal 1 admin)
+- [ ] Data seed berhasil (1 admin, 1 manager, 2 staff)
+- [ ] Sample reports dan transactions tersedia
 
 ### Assets
 - [ ] `npm run build` berhasil
@@ -270,10 +271,11 @@ Gunakan checklist ini untuk memastikan sistem siap digunakan.
 - [ ] `CHECKLIST_VERIFIKASI.md` (file ini) ada
 
 ### Database
-- [ ] `database/sistem_analitik_keuangan.sql` ada
-- [ ] SQL file dapat diimport tanpa error
+- [ ] Migrations dan Seeders lengkap
+- [ ] Migration dapat dijalankan tanpa error
+- [ ] Seeder dapat dijalankan tanpa error
 - [ ] Credential tercantum di dokumentasi
-- [ ] Sample data ada (minimal 4 user)
+- [ ] Sample data ada (4 user, 3 reports, 6 transactions)
 
 ---
 

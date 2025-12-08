@@ -104,25 +104,25 @@ EXIT;
 3. Masukkan nama: `sistem_analitik_keuangan`
 4. Klik "Create"
 
-### 6. Import Database
+### 6. Jalankan Migration & Seeder
 
-#### Opsi 1: Import SQL File (Recommended)
-```bash
-# Via command line
-mysql -u root -p sistem_analitik_keuangan < database/sistem_analitik_keuangan.sql
-```
-
-Atau via phpMyAdmin:
-1. Pilih database `sistem_analitik_keuangan`
-2. Klik tab "Import"
-3. Pilih file `database/sistem_analitik_keuangan.sql`
-4. Klik "Go"
-
-#### Opsi 2: Migration + Seeder
+Jalankan migration untuk membuat tabel dan seeder untuk data awal:
 ```bash
 php artisan migrate
 php artisan db:seed
 ```
+
+Atau jalankan sekaligus:
+```bash
+php artisan migrate --seed
+```
+
+Seeder akan membuat:
+- 1 Admin: admin@analitik.com / admin123
+- 1 Manager: manager@analitik.com / manager123
+- 2 Staff: staff@analitik.com & staff2@analitik.com / staff123
+- 3 Sample financial reports (pending, approved, rejected)
+- 6 Sample transactions
 
 ### 7. Build Assets
 ```bash

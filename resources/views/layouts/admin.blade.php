@@ -24,12 +24,22 @@
             <nav class="flex-1 p-5 space-y-2 mt-3">
                 <a href="{{ route('admin.dashboard') }}"
                    class="flex items-center gap-2 px-4 py-2 rounded-lg transition-all duration-200 hover:bg-blue-500 hover:pl-5 {{ request()->routeIs('admin.dashboard') ? 'bg-blue-600 pl-5 shadow-md' : '' }}">
-                   <span>Dashboard</span>
+                   <span>📊 Dashboard</span>
                 </a>
 
                 <a href="{{ route('admin.users.index') }}"
                    class="flex items-center gap-2 px-4 py-2 rounded-lg transition-all duration-200 hover:bg-blue-500 hover:pl-5 {{ request()->routeIs('admin.users.*') ? 'bg-blue-600 pl-5 shadow-md' : '' }}">
-                   <span>Kelola User</span>
+                   <span>👥 Kelola User</span>
+                </a>
+
+                <a href="{{ route('admin.reports.index') }}"
+                   class="flex items-center gap-2 px-4 py-2 rounded-lg transition-all duration-200 hover:bg-blue-500 hover:pl-5 {{ request()->routeIs('admin.reports.*') ? 'bg-blue-600 pl-5 shadow-md' : '' }}">
+                   <span>📋 Validasi Laporan</span>
+                </a>
+
+                <a href="{{ route('admin.activity-logs.index') }}"
+                   class="flex items-center gap-2 px-4 py-2 rounded-lg transition-all duration-200 hover:bg-blue-500 hover:pl-5 {{ request()->routeIs('admin.activity-logs.*') ? 'bg-blue-600 pl-5 shadow-md' : '' }}">
+                   <span>📜 Monitoring Aktivitas</span>
                 </a>
             </nav>
 

@@ -4,6 +4,8 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\UserManagementController;
 use App\Http\Controllers\Admin\AdminDashboardController;
+use App\Http\Controllers\Admin\FinancialReportValidationController;
+use App\Http\Controllers\Admin\ActivityLogController;
 
 use App\Http\Controllers\Manager\ManagerDashboardController;
 use App\Http\Controllers\Manager\FinanceController;
@@ -18,11 +20,16 @@ Route::get('/', function () {
   
 Route::middleware(['auth'])->group(function () {
 
-    // === Admin Dashboard ===
-
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->as('admin.')->group(function () {
     Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
     Route::resource('users', UserManagementController::class);
+    
+    Route::get('/reports', [FinancialReportValidationController::class, 'index'])->name('reports.index');
+    Route::get('/reports/{report}', [FinancialReportValidationController::class, 'show'])->name('reports.show');
+    Route::post('/reports/{report}/approve', [FinancialReportValidationController::class, 'approve'])->name('reports.approve');
+    Route::post('/reports/{report}/reject', [FinancialReportValidationController::class, 'reject'])->name('reports.reject');
+    
+    Route::get('/activity-logs', [ActivityLogController::class, 'index'])->name('activity-logs.index');
     });
 
     // === Manager Dashboard ===

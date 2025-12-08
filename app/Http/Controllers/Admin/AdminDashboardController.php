@@ -4,21 +4,39 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Models\FinancialReport;
+use App\Models\ActivityLog;
+use App\Models\Transaction;
 use Illuminate\Http\Request;
 
 class AdminDashboardController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        return view('admin.index', [
-            'totalUsers' => User::count(),
-            'totalAdmin' => User::where('role', 'admin')->count(),
-            'totalManager' => User::where('role', 'manager')->count(),
-            'totalStaff' => User::where('role', 'staff')->count(),
-        ]);
+        $totalUsers = User::count();
+        $totalAdmin = User::where('role', 'admin')->count();
+        $totalManager = User::where('role', 'manager')->count();
+        $totalStaff = User::where('role', 'staff')->count();
+
+        $pendingReports = FinancialReport::where('status', 'pending')->count();
+        $approvedReports = FinancialReport::where('status', 'approved')->count();
+        $rejectedReports = FinancialReport::where('status', 'rejected')->count();
+
+        $totalTransactions = Transaction::count();
+        $totalPemasukan = Transaction::where('jenis', 'pemasukan')->sum('jumlah');
+        $totalPengeluaran = Transaction::where('jenis', 'pengeluaran')->sum('jumlah');
+
+        $recentActivities = ActivityLog::with('user')
+            ->latest()
+            ->take(10)
+            ->get();
+
+        return view('admin.index', compact(
+            'totalUsers', 'totalAdmin', 'totalManager', 'totalStaff',
+            'pendingReports', 'approvedReports', 'rejectedReports',
+            'totalTransactions', 'totalPemasukan', 'totalPengeluaran',
+            'recentActivities'
+        ));
     }
 
     /**

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\ActivityLog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -30,6 +31,11 @@ class AuthenticatedSessionController extends Controller
 
             // Arahkan ke dashboard sesuai role
             $user = Auth::user();
+
+            ActivityLog::create([
+                'user_id' => $user->id,
+                'activity' => 'Login ke sistem sebagai ' . $user->role,
+            ]);
             if ($user->role === 'admin') {
                 return redirect()->intended('/admin/dashboard');
             } elseif ($user->role === 'manager') {
@@ -47,6 +53,15 @@ class AuthenticatedSessionController extends Controller
 
     public function destroy(Request $request)
     {
+        $user = Auth::user();
+        
+        if ($user) {
+            ActivityLog::create([
+                'user_id' => $user->id,
+                'activity' => 'Logout dari sistem',
+            ]);
+        }
+
         Auth::logout();
 
         $request->session()->invalidate();

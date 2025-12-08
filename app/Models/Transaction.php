@@ -7,19 +7,22 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Transaction extends Model
 {
-    // Atribut yang boleh diisi massal
     protected $fillable = [
-        'financial_report_id', // foreign key ke FinancialReport
-        'description',
-        'amount',
-        'transaction_date'
+        'financial_report_id',
+        'user_id',
+        'jenis',
+        'jumlah',
+        'keterangan',
+        'tanggal'
     ];
 
-    /**
-     * Relasi: Transaction dimiliki oleh (belongs to) FinancialReport.
-     */
     public function financialReport(): BelongsTo
     {
         return $this->belongsTo(FinancialReport::class);
+    }
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
     }
 }

@@ -34,11 +34,11 @@
     <div class="bg-white p-6 rounded-lg shadow mt-8">
         <h3 class="text-lg font-semibold mb-4">Fitur Manager</h3>
         <div class="flex flex-wrap gap-4">
-            <a href="{{ route('manager.finance') }}"
+            <a href="{{ route('manager.finance.index') }}"
                 class="inline-flex items-center bg-green-600 hover:bg-green-700 text-white font-semibold px-5 py-3 rounded-lg transition">
                 📊 Lihat Laporan Keuangan
             </a> 
-            <a href="{{ route('manager.transaction') }}"
+            <a href="{{ route('manager.transaction.index') }}"
                 class="inline-flex items-center bg-blue-600 hover:bg-blue-700 text-white font-semibold px-5 py-3 rounded-lg transition">
                 👥 Laporan Transaksi
             </a>

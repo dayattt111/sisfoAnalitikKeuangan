@@ -22,14 +22,22 @@
 
             {{-- Navigasi --}}
             <nav class="flex-1 p-5 space-y-2 mt-3">
-                <a href="{{ route('admin.dashboard') }}"
-                   class="flex items-center gap-2 px-4 py-2 rounded-lg transition-all duration-200 hover:bg-blue-500 hover:pl-5 {{ request()->routeIs('admin.dashboard') ? 'bg-blue-600 pl-5 shadow-md' : '' }}">
+                <a href="{{ route('staff.dashboard') }}"
+                   class="flex items-center gap-2 px-4 py-2 rounded-lg transition-all duration-200 hover:bg-blue-500 hover:pl-5 {{ request()->routeIs('staff.dashboard') ? 'bg-blue-600 pl-5 shadow-md' : '' }}">
+                   <i class="fas fa-home"></i>
                    <span>Dashboard</span>
                 </a>
 
-                <a href="{{ route('admin.users.index') }}"
-                   class="flex items-center gap-2 px-4 py-2 rounded-lg transition-all duration-200 hover:bg-blue-500 hover:pl-5 {{ request()->routeIs('admin.users.*') ? 'bg-blue-600 pl-5 shadow-md' : '' }}">
-                   <span>Kelola User</span>
+                <a href="{{ route('staff.reports.index') }}"
+                   class="flex items-center gap-2 px-4 py-2 rounded-lg transition-all duration-200 hover:bg-blue-500 hover:pl-5 {{ request()->routeIs('staff.reports.*') ? 'bg-blue-600 pl-5 shadow-md' : '' }}">
+                   <i class="fas fa-file-alt"></i>
+                   <span>Laporan Keuangan</span>
+                </a>
+
+                <a href="{{ route('staff.transactions.index') }}"
+                   class="flex items-center gap-2 px-4 py-2 rounded-lg transition-all duration-200 hover:bg-blue-500 hover:pl-5 {{ request()->routeIs('staff.transactions.*') ? 'bg-blue-600 pl-5 shadow-md' : '' }}">
+                   <i class="fas fa-exchange-alt"></i>
+                   <span>Riwayat Transaksi</span>
                 </a>
             </nav>
 

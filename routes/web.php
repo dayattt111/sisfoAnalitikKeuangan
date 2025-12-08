@@ -48,9 +48,15 @@ Route::middleware(['role:manager'])->prefix('manager')->as('manager.')->group(fu
     Route::get('/report', [ReportController::class, 'index'])->name('report');
     });
 
-    // Staff Dashb
+    // Staff Routes
 Route::middleware(['role:staff'])->prefix('staff')->as('staff.')->group(function () {
     Route::get('/dashboard', [StaffDashboardController::class, 'index'])->name('dashboard');
+    
+    // Financial Reports
+    Route::resource('reports', \App\Http\Controllers\Staff\FinancialReportController::class);
+    
+    // Transactions
+    Route::resource('transactions', \App\Http\Controllers\Staff\TransactionController::class);
     });
 });
 

@@ -26,6 +26,17 @@ class FinancialReport extends Model
     ];
 
     /**
+     * The attributes that should be cast.
+     */
+    protected $casts = [
+        'validated_at' => 'datetime',
+        'periode_mulai' => 'date',
+        'periode_akhir' => 'date',
+        'bulan' => 'integer',
+        'tahun' => 'integer',
+    ];
+
+    /**
      * Relasi: FinancialReport dimiliki oleh (belongs to) User (staff yang membuat).
      */
     public function user(): BelongsTo

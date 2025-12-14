@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\FinancialReportValidationController;
 use App\Http\Controllers\Admin\ActivityLogController;
 use App\Http\Controllers\Admin\FiscalYearController;
+use App\Http\Controllers\Admin\AnalyticsController;
 
 use App\Http\Controllers\Manager\ManagerDashboardController;
 use App\Http\Controllers\Manager\FinanceController;
@@ -37,6 +38,10 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->as('admin.')->group(
     Route::post('/fiscal-years', [FiscalYearController::class, 'store'])->name('fiscal-years.store');
     Route::patch('/fiscal-years/{id}/toggle', [FiscalYearController::class, 'toggleStatus'])->name('fiscal-years.toggle');
     Route::delete('/fiscal-years/{id}', [FiscalYearController::class, 'destroy'])->name('fiscal-years.destroy');
+    
+    Route::get('/analytics', [AnalyticsController::class, 'index'])->name('analytics.index');
+    Route::get('/analytics/comparison', [AnalyticsController::class, 'comparison'])->name('analytics.comparison');
+    Route::get('/analytics/export', [AnalyticsController::class, 'export'])->name('analytics.export');
     });
 
     // === Manager Dashboard ===

@@ -50,6 +50,12 @@
                    <i class="fas fa-calendar-alt w-5"></i>
                    <span>Kelola Tahun</span>
                 </a>
+
+                <a href="{{ route('admin.analytics.index') }}"
+                   class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition-all duration-150 {{ request()->routeIs('admin.analytics.*') ? 'bg-blue-600 text-white shadow-md' : 'text-gray-300 hover:bg-gray-800 hover:text-white' }}">
+                   <i class="fas fa-microscope w-5"></i>
+                   <span>Analitik Kesehatan</span>
+                </a>
             </nav>
 
             {{-- Footer Sidebar --}}

@@ -7,11 +7,19 @@ use App\Models\Transaction;
 use App\Models\User;
 use App\Models\ActivityLog;
 use App\Http\Controllers\Controller;
+use App\Services\FinancialAnalyticsService;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
 class FinanceController extends Controller
 {
+    protected $analyticsService;
+
+    public function __construct(FinancialAnalyticsService $analyticsService)
+    {
+        $this->analyticsService = $analyticsService;
+    }
+
     public function index(Request $request)
     {
         $year = $request->input('year', now()->year);
@@ -62,6 +70,10 @@ class FinanceController extends Controller
             ->orderByDesc('year')
             ->pluck('year');
 
+        // Get Financial Analytics
+        $healthMetrics = $this->analyticsService->calculateHealthMetrics($year);
+        $forecast = $this->analyticsService->getForecast($year);
+
         ActivityLog::create([
             'user_id' => Auth::id(),
             'activity' => 'Manager melihat ringkasan keuangan tahun ' . $year,
@@ -75,7 +87,9 @@ class FinanceController extends Controller
             'totalTransaksi',
             'topStaffRevenue',
             'year',
-            'availableYears'
+            'availableYears',
+            'healthMetrics',
+            'forecast'
         ));
     }
 
@@ -114,6 +128,26 @@ class FinanceController extends Controller
             'month',
             'year',
             'bulanNames'
+        ));
+    }
+
+    public function analytics(Request $request)
+    {
+        $year = $request->input('year', now()->year);
+
+        // Get Financial Analytics
+        $healthMetrics = $this->analyticsService->calculateHealthMetrics($year);
+        $forecast = $this->analyticsService->getForecast($year);
+
+        ActivityLog::create([
+            'user_id' => Auth::id(),
+            'activity' => 'Manager melihat analitik kesehatan keuangan tahun ' . $year,
+        ]);
+
+        return view('manager.finance.analytics', compact(
+            'year',
+            'healthMetrics',
+            'forecast'
         ));
     }
 }

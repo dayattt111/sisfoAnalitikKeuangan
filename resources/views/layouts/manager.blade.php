@@ -37,6 +37,11 @@
                    <i class="fas fa-exchange-alt w-5"></i>
                    <span>Laporan Transaksi</span>
                 </a>
+                <a href="{{ route('manager.analytics') }}"
+                   class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition-all duration-150 {{ request()->routeIs('manager.analytics') ? 'bg-emerald-600 text-white shadow-md' : 'text-gray-300 hover:bg-gray-800 hover:text-white' }}">
+                   <i class="fas fa-microscope w-5"></i>
+                   <span>Analitik Kesehatan</span>
+                </a>
                 <a href="{{ route('manager.report.index') }}"
                    class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition-all duration-150 {{ request()->routeIs('manager.report.*') ? 'bg-emerald-600 text-white shadow-md' : 'text-gray-300 hover:bg-gray-800 hover:text-white' }}">
                    <i class="fas fa-clipboard-check w-5"></i>

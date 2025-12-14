@@ -46,6 +46,7 @@ Route::middleware(['role:manager'])->prefix('manager')->as('manager.')->group(fu
     // fitur
     Route::get('/finance', [FinanceController::class, 'index'])->name('finance.index');
     Route::get('/finance/{month}', [FinanceController::class, 'show'])->name('finance.show');
+    Route::get('/analytics', [FinanceController::class, 'analytics'])->name('analytics');
     
     Route::get('/transaction', [TransactionReportController::class, 'index'])->name('transaction.index');
     Route::get('/transaction/{transaction}', [TransactionReportController::class, 'show'])->name('transaction.show');
